@@ -1,7 +1,4 @@
+import "./Banner.scss";
 export default function Banner() {
-    return (
-      <section>
-      Don't miss out the chance!
-      </section>
-    );
-  }
+  return <section>Don't miss out the chance!</section>;
+}
