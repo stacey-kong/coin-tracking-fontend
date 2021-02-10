@@ -4,14 +4,13 @@
   "description": "",
   "main": "index.tsx",
   "scripts": {
-    "start:dev": "webpack serve",
+    "start": "webpack serve",
     "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/react-router-dom": "^5.1.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
@@ -22,8 +21,10 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
     "@babel/preset-typescript": "^7.12.13",
+    "@types/node": "^14.14.25",
     "@types/react": "^17.0.1",
     "@types/react-dom": "^17.0.0",
+    "@types/react-router-dom": "^5.1.7",
     "@types/webpack-env": "^1.16.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.0.2",
