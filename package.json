@@ -14,7 +14,8 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "serve": "^11.3.2"
+    "serve": "^11.3.2",
+    "tailwindcss": "^2.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",
@@ -26,9 +27,12 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.7",
     "@types/webpack-env": "^1.16.0",
+    "autoprefixer": "^10.2.4",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.0.2",
     "node-sass": "^5.0.0",
+    "postcss-cli": "^8.3.1",
+    "postcss-loader": "^5.0.0",
     "sass-loader": "^11.0.1",
     "source-map-loader": "^2.0.0",
     "style-loader": "^2.0.0",
