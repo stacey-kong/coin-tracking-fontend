@@ -34,25 +34,24 @@ module.exports = (env, argv) => {
             {
               loader: "postcss-loader",
               options: {
-                config: {
-                  path: path.resolve(__dirname, "./postcss.config.js"),
-                },
                 sourceMap: true,
               },
             },
           ],
         },
+      ],
+    },
 
-  // externals: {
-  //   react: "React",
-  //   "react-dom": "ReactDOM",
-  // },
+    // externals: {
+    //   react: "React",
+    //   "react-dom": "ReactDOM",
+    // },
 
-  devServer: {
-    historyApiFallback: true,
-    contentBase: path.join(__dirname, "dist"),
-    compress: true,
-    port: 9000,
-  },
-};
+    devServer: {
+      historyApiFallback: true,
+      contentBase: path.join(__dirname, "dist"),
+      compress: true,
+      port: 9000,
+    },
+  };
 };
