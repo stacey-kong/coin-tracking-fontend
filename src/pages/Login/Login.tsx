@@ -6,7 +6,7 @@ export interface Credentials {
   password: string;
 }
 interface LoginProps {
-  onclick: (arg0: Credentials) => void;
+  setToken: (userToken: { token: string }) => void;
 }
 
 async function loginUser(Props: Credentials) {
@@ -22,8 +22,8 @@ async function loginUser(Props: Credentials) {
 export function Login(Props: LoginProps) {
   const [username, setUserName] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const setToken = Props.onclick;
-  const handleSubmit = async (e: React.FormEvent)=> {
+  const setToken = Props.setToken;
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username) {
       alert("please input username");
@@ -39,7 +39,10 @@ export function Login(Props: LoginProps) {
   return (
     <>
       <Layout>
-        <form onSubmit = {handleSubmit} className="m-auto mt-10 w-1/4 p-5 bg-gray-100 flex-box border-solid border-4 border-indigo-300">
+        <form
+          onSubmit={handleSubmit}
+          className="m-auto mt-10 w-1/4 p-5 bg-gray-100 flex-box border-solid border-4 border-indigo-300"
+        >
           <div className="m-auto w-3/4">
             <label className="w-full">Username</label>
             <input

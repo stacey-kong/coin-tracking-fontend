@@ -1,6 +1,6 @@
-import { useState } from "react";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import { Login, Credentials } from "./pages/Login/Login";
+import { Login } from "./pages/Login/Login";
+import useToken from "../Hook/useToken";
 import {
   BrowserRouter as Router,
   Route,
@@ -9,13 +9,10 @@ import {
 } from "react-router-dom";
 
 export default function App() {
-  const [token, setToken] = useState<Credentials | null>(null);
-  const handleSubmit = function (token: Credentials): void {
-    setToken(token);
-  };
-
-  if (!token) {
-    return <Login onclick={handleSubmit} />;
+  const { token, setToken } = useToken();
+  if (!token || !token.length) {
+    console.log("no token");
+    return <Login setToken={setToken} />;
   }
 
   return (
