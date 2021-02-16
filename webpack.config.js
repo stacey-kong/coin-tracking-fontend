@@ -5,7 +5,7 @@ const autoprefixer = require("autoprefixer"); // help tailwindcss to work
 module.exports = (env, argv) => {
   return {
     mode: "development",
-    entry: "./src/index.tsx",
+    entry: ["babel-polyfill", "./src/index.tsx"],
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "bundle.js",
@@ -51,7 +51,7 @@ module.exports = (env, argv) => {
       historyApiFallback: true,
       contentBase: path.join(__dirname, "dist"),
       compress: true,
-      port: 9000,
+      port: 9009,
     },
   };
 };
