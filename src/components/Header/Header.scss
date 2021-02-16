@@ -1,5 +1,11 @@
-h2 {
-    background-color: #a0c3f0;
+header {
+  display: flex;
+  background-color: #a0c3f0;
+  height: 20vh;
+
+  h2 {
     font-size: 200%;
     text-align: center;
+    margin: auto;
   }
+}
