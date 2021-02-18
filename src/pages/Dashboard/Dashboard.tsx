@@ -1,6 +1,8 @@
 import Header from "../../components/Header/Header";
 import Banner from "../../components/Banner/Banner";
 import Table from "../../utils/Table/Table";
+import ToolsBar from "../../components/ToolsBar/ToolsBar";
+import Form from "../../components/form/form";
 const coinList = [
   { name: "BTC", target: "20%", times: "0", high: true, low: false },
   { name: "ETH", target: "10%", times: "0", high: true, low: false },
@@ -20,6 +22,10 @@ export default function Dashboard() {
     <>
       <Header />
       <Table headers={headers} rows={coinList} />
+      <div className="fixed bottom-0 w-full">
+        <ToolsBar />
+        <Banner />
+      </div>
     </>
   );
 }
