@@ -3,6 +3,7 @@ import Banner from "../../components/Banner/Banner";
 import Table from "../../utils/Table/Table";
 import ToolsBar from "../../components/ToolsBar/ToolsBar";
 import Form from "../../components/form/form";
+import Button from "../../utils/Button/Button";
 import { useState } from "react";
 const coinList = [
   { name: "BTC", target: "20%", times: "0", high: true, low: false },
@@ -30,7 +31,10 @@ export default function Dashboard() {
       <Table headers={headers} rows={coinList} />
       <Form show={formState} />
       <div className="fixed bottom-0 w-full">
-        <ToolsBar />
+        <ToolsBar>
+          <Button text="ADD" onclick={showHideForm} />
+          <Button text="MODIFY" onclick={showHideForm} />
+        </ToolsBar>
         <Banner />
       </div>
     </>
