@@ -29,7 +29,7 @@ export default function Dashboard() {
     <>
       <Header />
       <Table headers={headers} rows={coinList} />
-      <Form show={formState} />
+      <Form show={formState} onSave={showHideForm} />
       <div className="fixed bottom-0 w-full">
         <ToolsBar>
           <Button text="ADD" onclick={showHideForm} />
