@@ -1,17 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import Layout from "../../components/Layout/Layout";
+import { useHistory } from "react-router-dom";
+import Layout from "../components/Layout/Layout";
 
-export interface Credentials {
+interface Credentials {
   username: string;
   password: string;
 }
-interface LoginProps {
-  setToken: (userToken: { token: string }) => void;
-}
 
-async function loginUser(Props: Credentials) {
-  return fetch("http://localhost:9010/login", {
+async function RegisterUser(Props: Credentials) {
+  return fetch("http://localhost:9010/api/auth/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -20,10 +17,10 @@ async function loginUser(Props: Credentials) {
   }).then((data) => data.json());
 }
 
-export function Login(Props: LoginProps) {
+export default function Register() {
+  const history = useHistory();
   const [username, setUserName] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const setToken = Props.setToken;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username) {
@@ -34,8 +31,12 @@ export function Login(Props: LoginProps) {
       return;
     }
 
-    const token = await loginUser({ username: username, password: password });
-    setToken(token);
+    const res = await RegisterUser({
+      username: username,
+      password: password,
+    });
+
+    console.log(res);
   };
   return (
     <>
@@ -60,18 +61,10 @@ export function Login(Props: LoginProps) {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="m-auto mt-4 justify-between">
-            <button
-              type="submit"
-              className="w-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Login
+          <div className="m-auto mt-2 max-w-max">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Register
             </button>
-            <Link to="register">
-              <button className="w-1/2 bg-blue-100 hover:bg-blue-300 text-blue-900 font-bold py-2 px-4  rounded">
-                Register
-              </button>
-            </Link>
           </div>
         </form>
       </Layout>

@@ -5,10 +5,10 @@ import {
   Redirect,
 } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import { Login } from "./pages/Login/Login";
-import Register from "./pages/Register/Register";
-import useToken from "../Hook/useToken";
+import Dashboard from "./pages/Dashboard";
+import { Login } from "./pages/Login";
+import Register from "./pages/Register";
+import useToken from "./Hook/useToken";
 
 export default function App() {
   const { token, setToken } = useToken();

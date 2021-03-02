@@ -1,9 +1,9 @@
-import Header from "../../components/Header/Header";
-import Banner from "../../components/Banner/Banner";
-import Table from "../../utils/Table/Table";
-import ToolsBar from "../../components/ToolsBar/ToolsBar";
-import Form from "../../components/form/form";
-import Button from "../../utils/Button/Button";
+import Header from "../components/Header/Header";
+import Banner from "../components/Banner/Banner";
+import Table from "../utils/Table/Table";
+import ToolsBar from "../components/ToolsBar/ToolsBar";
+import Form from "../components/form/form";
+import Button from "../utils/Button/Button";
 import { useState } from "react";
 const coinList = [
   { name: "BTC", target: "20%", times: "0", high: true, low: false },
