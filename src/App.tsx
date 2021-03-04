@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import { Login } from "./pages/Login";
 import {Register} from "./pages/Register";
 import useToken from "./Hook/useToken";
+import Snackbar from "./components/Snackbar/SnackBar"
 
 export default function App() {
   const { token, setToken } = useToken();
@@ -18,6 +19,7 @@ export default function App() {
   // }
 
   return (
+    <>
     <Router>
       <Switch>
         <PrivateRoute exact path="/" component={Dashboard} />
@@ -30,5 +32,7 @@ export default function App() {
         <Redirect from="*" to="/" />
       </Switch>
     </Router>
+    <Snackbar/>
+    </>
   );
 }
