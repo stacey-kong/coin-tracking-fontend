@@ -7,7 +7,7 @@ import {
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import { Login } from "./pages/Login";
-import Register from "./pages/Register";
+import {Register} from "./pages/Register";
 import useToken from "./Hook/useToken";
 
 export default function App() {
@@ -25,7 +25,7 @@ export default function App() {
           <Login setToken={setToken} />
         </Route>
         <Route path="/register">
-          <Register setToken={setToken} />
+          <Register />
         </Route>
         <Redirect from="*" to="/" />
       </Switch>

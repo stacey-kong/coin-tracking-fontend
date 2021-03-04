@@ -2,6 +2,10 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 
+// redux
+import { connect } from "react-redux";
+import { alertActions } from "../redux/Alert/alert.action";
+
 interface Credentials {
   username: string;
   password: string;
@@ -17,7 +21,7 @@ async function RegisterUser(Props: Credentials) {
   }).then((data) => data.json());
 }
 
-export default function Register() {
+function Register() {
   const history = useHistory();
   const [username, setUserName] = useState<string>();
   const [password, setPassword] = useState<string>();
@@ -36,7 +40,15 @@ export default function Register() {
       password: password,
     });
 
-    console.log(res);
+    if (res.error) {
+      alertActions.error({
+        type: "error",
+        message: res.errors["msg"],
+      });
+    } else {
+      alertActions.success({ type: "success", message: res.message });
+      history.push("login");
+    }
   };
   return (
     <>
@@ -71,3 +83,10 @@ export default function Register() {
     </>
   );
 }
+
+const actionCreators = {
+  successAlerts: alertActions.success,
+  errorAlerts: alertActions.error,
+};
+const connectedRegister = connect(null, actionCreators)(Register);
+export { connectedRegister as Register };
