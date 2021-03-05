@@ -1,16 +1,17 @@
 export interface AlertMessage {
-  type: String;
+  type: "error" | "success" | "warning" | "default";
   message: String;
 }
 
 export interface alertState {
-  messages: AlertMessage[];
+  open: boolean;
+  messages?: AlertMessage;
 }
-
-export const alertConstants = {
-  SUCCESS: "ALERT_SUCCESS",
-  ERROR: "ALERT_ERROR",
-};
+export enum alertConstants {
+  SUCCESS = "ALERT_SUCCESS",
+  ERROR = "ALERT_ERROR",
+  Clear = "ALERT_Delete",
+}
 
 interface AlertSuccessAction {
   type: typeof alertConstants.SUCCESS;
@@ -22,4 +23,11 @@ interface AlertErrorAction {
   payload: AlertMessage;
 }
 
-export type AlertActionTypes = AlertSuccessAction | AlertErrorAction;
+interface AlertClearAction {
+  type: typeof alertConstants.Clear;
+}
+
+export type AlertActionTypes =
+  | AlertSuccessAction
+  | AlertErrorAction
+  | AlertClearAction;

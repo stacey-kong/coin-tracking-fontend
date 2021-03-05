@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 
 // redux
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { alertActions } from "../redux/Alert/alert.action";
 
 interface Credentials {
@@ -21,8 +21,9 @@ async function RegisterUser(Props: Credentials) {
   }).then((data) => data.json());
 }
 
-function Register() {
+export default function Register() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [username, setUserName] = useState<string>();
   const [password, setPassword] = useState<string>();
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,12 +42,14 @@ function Register() {
     });
 
     if (res.error) {
-      alertActions.error({
-        type: "error",
-        message: res.errors["msg"],
-      });
+      dispatch(
+        alertActions.error({
+          type: "error",
+          message: res.errors["msg"],
+        })
+      );
     } else {
-      alertActions.success({ type: "success", message: res.message });
+      dispatch(alertActions.success({ type: "success", message: res.message }));
       history.push("login");
     }
   };
@@ -83,10 +86,3 @@ function Register() {
     </>
   );
 }
-
-const actionCreators = {
-  successAlerts: alertActions.success,
-  errorAlerts: alertActions.error,
-};
-const connectedRegister = connect(null, actionCreators)(Register);
-export { connectedRegister as Register };

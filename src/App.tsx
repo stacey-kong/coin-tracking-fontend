@@ -7,32 +7,37 @@ import {
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import { Login } from "./pages/Login";
-import {Register} from "./pages/Register";
+import Register from "./pages/Register";
 import useToken from "./Hook/useToken";
-import Snackbar from "./components/Snackbar/SnackBar"
+import Snackbar from "./components/Snackbar/SnackBar";
+
+// redux
+import { useSelector, useDispatch } from "react-redux";
+import { AppState } from "./redux/rootReducer";
+import { alertActions } from "./redux/Alert/alert.action";
 
 export default function App() {
   const { token, setToken } = useToken();
-  // if (!token || !token.length) {
-  //   console.log("no token");
-  //   return <Login setToken={setToken} />;
-  // }
-
+  const dispatch = useDispatch();
+  const snackbarState = useSelector((state: AppState) => state.alert.open);
+  function closeSnackbar() {
+    dispatch(alertActions.clear());
+  }
   return (
     <>
-    <Router>
-      <Switch>
-        <PrivateRoute exact path="/" component={Dashboard} />
-        <Route path="/login">
-          <Login setToken={setToken} />
-        </Route>
-        <Route path="/register">
-          <Register />
-        </Route>
-        <Redirect from="*" to="/" />
-      </Switch>
-    </Router>
-    <Snackbar/>
+      <Router>
+        <Switch>
+          <PrivateRoute exact path="/" component={Dashboard} />
+          <Route path="/login">
+            <Login setToken={setToken} />
+          </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Redirect from="*" to="/" />
+        </Switch>
+      </Router>
+      {snackbarState && <Snackbar onclick={closeSnackbar} />}
     </>
   );
 }

@@ -1,10 +1,7 @@
+import { createStore, Store } from "redux";
 
-    import { createStore } from 'redux';
+import { AppState, rootReducer } from "./rootReducer";
 
-    import rootReducer from './rootReducer';
+const store: Store<AppState> = createStore(rootReducer);
 
-
-    const store = createStore(rootReducer);
-
-
-    export default store;
+export default store;
