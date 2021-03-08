@@ -6,20 +6,23 @@ import Layout from "../components/Layout/Layout";
 import { useDispatch } from "react-redux";
 import { alertActions } from "../redux/Alert/alert.action";
 
-interface Credentials {
-  username: string;
-  password: string;
-}
+// service
+import { userService } from "../service/userService";
 
-async function RegisterUser(Props: Credentials) {
-  return fetch("http://localhost:9010/api/auth/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(Props),
-  }).then((data) => data.json());
-}
+// interface Credentials {
+//   username: string;
+//   password: string;
+// }
+
+// async function RegisterUser(Props: Credentials) {
+//   return fetch("http://localhost:9010/api/auth/register", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(Props),
+//   }).then((data) => data.json());
+// }
 
 export default function Register() {
   const history = useHistory();
@@ -36,7 +39,7 @@ export default function Register() {
       return;
     }
 
-    const res = await RegisterUser({
+    const res = await userService.register({
       username: username,
       password: password,
     });

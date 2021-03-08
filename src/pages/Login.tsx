@@ -2,28 +2,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 
-export interface Credentials {
-  username: string;
-  password: string;
-}
-interface LoginProps {
-  setToken: (userToken: { token: string }) => void;
-}
+import { userService } from "../service/userService";
 
-async function loginUser(Props: Credentials) {
-  return fetch("http://localhost:9010/api/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(Props),
-  }).then((data) => data.json());
-}
 
-export function Login(Props: LoginProps) {
+
+export function Login() {
   const [username, setUserName] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const setToken = Props.setToken;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username) {
@@ -34,8 +19,7 @@ export function Login(Props: LoginProps) {
       return;
     }
 
-    const token = await loginUser({ username: username, password: password });
-    setToken(token);
+    const token = await userService.login({ username: username, password: password });
   };
   return (
     <>
