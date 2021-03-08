@@ -8,7 +8,6 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import { Login } from "./pages/Login";
 import Register from "./pages/Register";
-import useToken from "./Hook/useToken";
 import Snackbar from "./components/Snackbar/SnackBar";
 
 // redux
@@ -17,7 +16,6 @@ import { AppState } from "./redux/rootReducer";
 import { alertActions } from "./redux/Alert/alert.action";
 
 export default function App() {
-  const { token, setToken } = useToken();
   const dispatch = useDispatch();
   const snackbarState = useSelector((state: AppState) => state.alert.open);
   function closeSnackbar() {
@@ -29,7 +27,7 @@ export default function App() {
         <Switch>
           <PrivateRoute exact path="/" component={Dashboard} />
           <Route path="/login">
-            <Login setToken={setToken} />
+            <Login />
           </Route>
           <Route path="/register">
             <Register />

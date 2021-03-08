@@ -1,14 +1,38 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
+import { alertActions } from "../redux/Alert/alert.action";
 
-import { userService } from "../service/userService";
-
-
+import { userActions } from "../redux/User/user.action";
+import { Credentials, userService } from "../service/userService";
 
 export function Login() {
   const [username, setUserName] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const login = (props: Credentials) => {
+    userService.login(props).then((data) => {
+      if (data.code === 400) {
+        dispatch(userActions.warning());
+        dispatch(alertActions.warning(data.message));
+      } else if (data.code === 422) {
+        dispatch(userActions.error());
+        dispatch(alertActions.error(data.message));
+      } else if (data.code === 404) {
+        dispatch(userActions.error());
+        dispatch(alertActions.error(data.message));
+      } else if (data.code === 200) {
+        localStorage.setItem("token", data.results.token);
+        dispatch(userActions.success());
+        dispatch(alertActions.success(data.message));
+        history.push("dashboard");
+      }
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username) {
@@ -18,8 +42,7 @@ export function Login() {
       alert("please input passward");
       return;
     }
-
-    const token = await userService.login({ username: username, password: password });
+    login({ username: username, password: password });
   };
   return (
     <>
