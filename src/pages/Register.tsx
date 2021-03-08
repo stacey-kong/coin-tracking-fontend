@@ -9,21 +9,6 @@ import { alertActions } from "../redux/Alert/alert.action";
 // service
 import { userService } from "../service/userService";
 
-// interface Credentials {
-//   username: string;
-//   password: string;
-// }
-
-// async function RegisterUser(Props: Credentials) {
-//   return fetch("http://localhost:9010/api/auth/register", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(Props),
-//   }).then((data) => data.json());
-// }
-
 export default function Register() {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -45,14 +30,9 @@ export default function Register() {
     });
 
     if (res.error) {
-      dispatch(
-        alertActions.error({
-          type: "error",
-          message: res.errors["msg"],
-        })
-      );
+      dispatch(alertActions.error(res.errors["msg"]));
     } else {
-      dispatch(alertActions.success({ type: "success", message: res.message }));
+      dispatch(alertActions.success(res.message));
       history.push("login");
     }
   };

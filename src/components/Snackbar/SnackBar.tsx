@@ -41,10 +41,10 @@ function renderSnackbar(props: snackbarContentProps) {
 }
 
 export default function Snackbar(props: snackbarProps) {
-  const alertState = useSelector((state: AppState) => state.alert.messages);
+  const alertState = useSelector((state: AppState) => state.alert);
   const snackbarContentProps: snackbarContentProps = {
     type: alertState?.type!,
-    message: alertState?.message!,
+    message: alertState?.messages!,
     onclick: props.onclick,
   };
   console.log(snackbarContentProps);
