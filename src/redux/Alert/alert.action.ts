@@ -1,19 +1,28 @@
-import { alertConstants, AlertMessage, AlertActionTypes } from "./alert.types";
+import { alertConstants,  AlertActionTypes } from "./alert.types";
 
-function success(newmessage: AlertMessage): AlertActionTypes {
-  return { type: alertConstants.SUCCESS, payload: newmessage };
+function success(newmessage: string): AlertActionTypes {
+  return { type: alertConstants.SUCCESS, message: newmessage };
 }
 
-function error(newmessage: AlertMessage): AlertActionTypes {
-  return { type: alertConstants.ERROR, payload: newmessage };
+function error(newmessage: string): AlertActionTypes {
+  return { type: alertConstants.ERROR, message: newmessage };
+}
+function warning(newmessage: string): AlertActionTypes {
+  return { type: alertConstants.WARNING, message: newmessage };
+}
+
+function normal(newmessage: string): AlertActionTypes {
+  return { type: alertConstants.NORMAL, message: newmessage };
 }
 
 function clear(): AlertActionTypes {
-  return { type: alertConstants.Clear };
+  return { type: alertConstants.CLEAR };
 }
 
 export const alertActions = {
   success,
   error,
+  warning,
+  normal,
   clear
 };
