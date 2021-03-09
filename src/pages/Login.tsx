@@ -16,7 +16,7 @@ export function Login() {
   const login = (props: Credentials) => {
     userService.login(props).then((data) => {
       if (data.code === 400) {
-        dispatch(userActions.warning());
+        dispatch(userActions.error());
         dispatch(alertActions.warning(data.message));
       } else if (data.code === 422) {
         dispatch(userActions.error());
@@ -32,6 +32,7 @@ export function Login() {
       }
     });
   };
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

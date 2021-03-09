@@ -1,4 +1,4 @@
-interface Credentials {
+export interface Credentials {
   username: string;
   password: string;
 }
@@ -28,7 +28,7 @@ async function login(Props: Credentials) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(Props)
 };
-    return fetch(`${api}login`, requestOptions
+    return fetch(`${api}/login`, requestOptions
     ).then((data) => data.json());
   }
 
