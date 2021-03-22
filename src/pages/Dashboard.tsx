@@ -4,31 +4,43 @@ import Table from "../utils/Table/Table";
 import ToolsBar from "../components/ToolsBar/ToolsBar";
 import Form from "../components/form/form";
 import Button from "../utils/Button/Button";
-import { useState } from "react";
-const coinList = [
-  { name: "BTC", target: "20%", times: "0", high: true, low: false },
-  { name: "ETH", target: "10%", times: "0", high: true, low: false },
-  { name: "ETC", target: "30%", times: "0", high: true, low: false },
-  { name: "DOGE", target: "10%", times: "0", high: true, low: false },
-];
+import { useState, useEffect } from "react";
+import socketIOClient  from "socket.io-client";
 
 export default function Dashboard() {
   const [formState, setFormState] = useState<boolean>(false);
+  const [coinPriceList, setCoinPriceList] = useState<Object[]>([
+    { name: "Bitcoin", price: 55994 },
+    { name: "Ethereum", price: 1781.4 },
+    { name: "FTX Token", price: 39.144 },
+    { name: "LINA", price: 0.10026 },
+  ]);
   const headers = [
     "Coins",
-    "Target Momentum",
-    "Alarm Times",
-    "History High",
-    "History Low",
+    "Price",
+    // "Target Momentum",
+    // "Alarm Times",
+    // "History High",
+    // "History Low",
   ];
 
   const showHideForm = () => {
     setFormState((prevformState) => !prevformState);
   };
+
+  useEffect(() => {
+    const socket = socketIOClient("localhost:9010");
+    socket.on("coinprice", (res) => {
+      setCoinPriceList(res);
+    });
+    // CLEAN UP THE EFFECT
+    return () => socket.disconnect();
+  }, []);
+
   return (
     <>
       <Header />
-      <Table headers={headers} rows={coinList} />
+      <Table headers={headers} rows={coinPriceList!} />
       <Form show={formState} onSave={showHideForm} />
       <div className="fixed bottom-0 w-full">
         <ToolsBar>
