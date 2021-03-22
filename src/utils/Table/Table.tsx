@@ -1,6 +1,6 @@
 interface TableProps {
   headers: string[];
-  rows: object[];
+  rows: Object[];
 }
 
 const yesButton = (
@@ -34,7 +34,6 @@ const renderList = function (data: (string | boolean)[]): any {
 };
 
 export default function table(props: TableProps) {
-  console.log(props.rows);
   return (
     <div className="flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

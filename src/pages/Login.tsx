@@ -32,7 +32,6 @@ export function Login() {
       }
     });
   };
-  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +49,7 @@ export function Login() {
       <Layout>
         <form
           onSubmit={handleSubmit}
-          className="m-auto mt-10 w-1/4 p-5 bg-gray-100 flex-box border-solid border-4 border-indigo-300"
+          className="m-auto mt-10 w-5/6 md:w-1/3 lg:w-1/4 p-5 bg-gray-100 flex-box border-solid border-4 border-indigo-300"
         >
           <div className="m-auto w-3/4">
             <label className="w-full">Username</label>
