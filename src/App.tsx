@@ -8,7 +8,7 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import { Login } from "./pages/Login";
 import Register from "./pages/Register";
-import Coindetails from "./pages/Coindetails";
+import CoinDetails from "./pages/Coindetails";
 import Snackbar from "./components/Snackbar/SnackBar";
 
 // redux
@@ -38,8 +38,8 @@ export default function App() {
           <Route path="/register">
             <Register />
           </Route>
-          <Route path="/coin">
-            <Coindetails />
+          <Route path="/coin/:coinname" >
+            <CoinDetails />
           </Route>
           <Redirect from="*" to="/" />
         </Switch>
