@@ -8,12 +8,18 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import { Login } from "./pages/Login";
 import Register from "./pages/Register";
+import Coindetails from "./pages/Coindetails";
 import Snackbar from "./components/Snackbar/SnackBar";
 
 // redux
 import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "./redux/rootReducer";
 import { alertActions } from "./redux/Alert/alert.action";
+import { Socket } from "socket.io-client";
+
+
+
+
 
 export default function App() {
   const dispatch = useDispatch();
@@ -31,6 +37,9 @@ export default function App() {
           </Route>
           <Route path="/register">
             <Register />
+          </Route>
+          <Route path="/coin">
+            <Coindetails />
           </Route>
           <Redirect from="*" to="/" />
         </Switch>

@@ -1,6 +1,8 @@
+import { CoinPriceList } from "../../pages/Dashboard";
+import { Link } from "react-router-dom";
 interface TableProps {
   headers: string[];
-  rows: Object[];
+  rows: CoinPriceList[];
 }
 
 const yesButton = (
@@ -14,23 +16,20 @@ const noButton = (
   </span>
 );
 
-const renderList = function (data: (string | boolean)[]): any {
-  const renderProps = data.map((data) => {
-    return (
+const renderList = function (data: CoinPriceList): any {
+  return (
+    <>
       <td className="px-6 py-4 whitespace-nowrap">
-        {typeof data == "boolean" ? (
-          data ? (
-            yesButton
-          ) : (
-            noButton
-          )
-        ) : (
-          <div className="text-sm text-gray-900">{data}</div>
-        )}
+        <Link to={`coin/${data.abbreviation}`}>
+          <div className="text-sm text-gray-900">{data.name}</div>
+        </Link>
       </td>
-    );
-  });
-  return renderProps;
+
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="text-sm text-gray-900">{data.price}</div>
+      </td>
+    </>
+  );
 };
 
 export default function table(props: TableProps) {
@@ -42,7 +41,7 @@ export default function table(props: TableProps) {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  {props.headers.map((header, index) => {
+                  {props.headers?.map((header, index) => {
                     return (
                       <th
                         scope="col"
@@ -56,10 +55,10 @@ export default function table(props: TableProps) {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {props.rows.map((row) => {
+                {props.rows?.map((row) => {
                   return (
                     <tr>
-                      {renderList(Object.values(row))}
+                      {renderList(row)}
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <a
                           href="#"
