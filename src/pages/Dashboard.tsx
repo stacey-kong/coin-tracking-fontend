@@ -25,19 +25,19 @@ export default function Dashboard() {
 
   useEffect(() => {
     socket.open();
-    socket.emit("averagePrice");
+    socket.emit("averageprice");
     return () => {
       socket.close();
     };
   }, []);
 
   useEffect(() => {
-    socket.on("Price", (res: CoinPriceList[]) => {
+    socket.on("allPrice", (res: CoinPriceList[]) => {
       setCoinPriceList(res);
     });
     // CLEAN UP THE EFFECT
     return () => {
-      socket.off("Price");
+      socket.off("allPrice");
     };
   }, []);
 
