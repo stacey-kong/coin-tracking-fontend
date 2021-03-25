@@ -1,6 +1,6 @@
 import Header from "../components/Header/Header";
 import Banner from "../components/Banner/Banner";
-import Table from "../utils/Table/Table";
+import Table from "../utils/Table/DashBoardTable";
 import ToolsBar from "../components/ToolsBar/ToolsBar";
 import Form from "../components/form/form";
 import Button from "../utils/Button/Button";
