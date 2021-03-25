@@ -5,36 +5,33 @@ import ToolsBar from "../components/ToolsBar/ToolsBar";
 import Form from "../components/form/form";
 import Button from "../utils/Button/Button";
 import { useState, useEffect } from "react";
-import socketIOClient  from "socket.io-client";
+import socket from "../socket.io";
+
+export interface CoinPriceList {
+  name: string;
+  abbreviation: string;
+  price: number;
+}
 
 export default function Dashboard() {
   const [formState, setFormState] = useState<boolean>(false);
-  const [coinPriceList, setCoinPriceList] = useState<Object[]>([
-    { name: "Bitcoin", price: 55994 },
-    { name: "Ethereum", price: 1781.4 },
-    { name: "FTX Token", price: 39.144 },
-    { name: "LINA", price: 0.10026 },
-  ]);
-  const headers = [
-    "Coins",
-    "Price",
-    // "Target Momentum",
-    // "Alarm Times",
-    // "History High",
-    // "History Low",
-  ];
-
+  const [coinPriceList, setCoinPriceList] = useState<CoinPriceList[] | null>(
+    null
+  );
+  const headers = ["coin", "price"];
   const showHideForm = () => {
     setFormState((prevformState) => !prevformState);
   };
 
   useEffect(() => {
-    const socket = socketIOClient("localhost:9010");
-    socket.on("coinprice", (res) => {
+    socket.emit("averagePrice");
+    socket.on("Price", (res: CoinPriceList[]) => {
       setCoinPriceList(res);
     });
     // CLEAN UP THE EFFECT
-    return () => socket.disconnect();
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   return (
