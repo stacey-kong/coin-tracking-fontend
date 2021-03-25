@@ -24,13 +24,20 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
+    socket.open();
     socket.emit("averagePrice");
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  useEffect(() => {
     socket.on("Price", (res: CoinPriceList[]) => {
       setCoinPriceList(res);
     });
     // CLEAN UP THE EFFECT
     return () => {
-      socket.disconnect();
+      socket.off("Price");
     };
   }, []);
 
