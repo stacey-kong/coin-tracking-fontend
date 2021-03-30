@@ -17,7 +17,7 @@ export default function Form(props: FormProps) {
       }}
       className={`${showHideClassName} z-10 w-full h-full fixed top-0 left-0`}
     >
-      <div className="shadow overflow-hidden sm:rounded-md relative w-1/3 m-auto">
+      <div className="shadow overflow-visible sm:rounded-md relative w-1/3 h-1/2 m-auto">
         <div className="px-4 py-5 bg-white sm:p-6">
           <div className="grid grid-cols-1 gap-1">
             {props.selection ? <Selection element={props.selection} /> : ""}

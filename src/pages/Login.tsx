@@ -26,6 +26,7 @@ export function Login() {
         dispatch(alertActions.error(data.message));
       } else if (data.code === 200) {
         localStorage.setItem("token", data.results.token);
+        localStorage.setItem("id", data.results.userId);
         dispatch(userActions.success());
         dispatch(alertActions.success(data.message));
         history.push("dashboard");
