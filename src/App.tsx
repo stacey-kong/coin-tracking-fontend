@@ -17,10 +17,6 @@ import { AppState } from "./redux/rootReducer";
 import { alertActions } from "./redux/Alert/alert.action";
 import { Socket } from "socket.io-client";
 
-
-
-
-
 export default function App() {
   const dispatch = useDispatch();
   const snackbarState = useSelector((state: AppState) => state.alert.open);
@@ -38,9 +34,7 @@ export default function App() {
           <Route path="/register">
             <Register />
           </Route>
-          <Route path="/coin/:coinname" >
-            <CoinDetails />
-          </Route>
+          <PrivateRoute path="/coin/:coinname" component={CoinDetails} />
           <Redirect from="*" to="/" />
         </Switch>
       </Router>
