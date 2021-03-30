@@ -55,9 +55,9 @@ export default function table(props: TableProps) {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {props.rows?.map((row) => {
+                {props.rows?.map((row,index) => {
                   return (
-                    <tr>
+                    <tr key={index}>
                       {renderList(row)}
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <a
