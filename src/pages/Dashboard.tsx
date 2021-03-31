@@ -4,7 +4,7 @@ import Table from "../utils/Table/DashBoardTable";
 import ToolsBar from "../components/ToolsBar/ToolsBar";
 import Form from "../components/Form/Form";
 import Button from "../utils/Button/Button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import socket from "../socket.io";
 
 export interface CoinPriceList {
@@ -23,12 +23,23 @@ export default function Dashboard() {
   const [coinPriceList, setCoinPriceList] = useState<CoinPriceList[] | null>(
     null
   );
-  const [coinList, setCoinList] = useState<CoinList[]>([]);
+  const subscriptionPayload = localStorage.getItem("id");
   const headers = ["coin", "price"];
+
   const showHideForm = () => {
     setFormState((prevformState) => !prevformState);
   };
-  const subscriptionPayload = localStorage.getItem("id");
+
+  const closeFrom = () => {
+    setFormState(false);
+  };
+
+
+
+  const addCoin = (Coin: string) => {
+    socket.emit("addScription", subscriptionPayload, Coin);
+    showHideForm();
+  };
 
   // get subscibed coin price on dashboard
   useEffect(() => {
@@ -49,23 +60,12 @@ export default function Dashboard() {
     };
   }, []);
 
-  // get add coin form selection list
-  useEffect(() => {
-    socket.emit("getCoinList", `${subscriptionPayload}`);
-    socket.on("coinList", (res: CoinList[]) => {
-      setCoinList(res);
-    });
-
-    return () => {
-      socket.off("coinList");
-    };
-  }, []);
 
   return (
     <>
       <Header />
       <Table headers={headers} rows={coinPriceList!} />
-      <Form show={formState} onSave={showHideForm} selection={coinList} />
+      <Form show={formState} onSave={addCoin} onClose={closeFrom} />
       <div className="fixed bottom-0 w-full">
         <ToolsBar>
           <Button text="ADD" onclick={showHideForm} />
