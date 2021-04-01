@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 interface TableProps {
   headers: string[];
   rows: CoinPriceList[];
+  delete: (coin: string) => void;
 }
 
 const yesButton = (
@@ -55,7 +56,7 @@ export default function table(props: TableProps) {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {props.rows?.map((row,index) => {
+                {props.rows?.map((row, index) => {
                   return (
                     <tr key={index}>
                       {renderList(row)}
@@ -63,6 +64,7 @@ export default function table(props: TableProps) {
                         <a
                           href="#"
                           className="text-indigo-600 hover:text-indigo-900"
+                          onClick={() => props.delete(row.abbreviation)}
                         >
                           delete
                         </a>
