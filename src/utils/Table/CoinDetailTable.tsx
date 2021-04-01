@@ -32,6 +32,8 @@ const renderList = function (data: CoinPrice): any {
   );
 };
 
+
+
 export default function table(props: TableProps) {
   return (
     <div className="flex flex-col">
@@ -55,20 +57,8 @@ export default function table(props: TableProps) {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {props.rows?.map((row) => {
-                  return (
-                    <tr>
-                      {renderList(row)}
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          delete
-                        </a>
-                      </td>
-                    </tr>
-                  );
+                {props.rows?.map((row, index) => {
+                  return <tr key={index}>{renderList(row)}</tr>;
                 })}
               </tbody>
             </table>

@@ -34,17 +34,14 @@ export default function Dashboard() {
     setFormState(false);
   };
 
-
-
   const addCoin = (Coin: string) => {
     socket.emit("addScription", subscriptionPayload, Coin);
     showHideForm();
   };
-  
+
   const deleteCoin = (Coin: string) => {
     socket.emit("deleteScription", subscriptionPayload, Coin);
   };
-
 
   // get subscibed coin price on dashboard
   useEffect(() => {
@@ -65,11 +62,13 @@ export default function Dashboard() {
     };
   }, []);
 
-
   return (
     <>
       <Header />
-      <Table headers={headers} rows={coinPriceList!} delete={deleteCoin}/>
+      <div className="h-3/5">
+        <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
+      </div>
+
       <Form show={formState} onSave={addCoin} onClose={closeFrom} />
       <div className="fixed bottom-0 w-full">
         <ToolsBar>
