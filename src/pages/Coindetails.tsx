@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import socket from "../socket.io";
 import Header from "../components/Header/Header";
@@ -12,12 +12,12 @@ export interface CoinPrice {
 export default function CoinDetails() {
   const [coinPrice, setCoinPrice] = useState<CoinPrice[] | null>(null);
   const headers = ["exchange", "price"];
-  const  {coinname}  = useParams<{coinname:string}>();
+  const { coinname } = useParams<{ coinname: string }>();
+  const history = useHistory();
 
   useEffect(() => {
     socket.open();
-    console.log(coinname)
-    socket.emit("coinprice",`${coinname}`);
+    socket.emit("coinprice", `${coinname}`);
     return () => {
       socket.close();
     };
@@ -25,7 +25,6 @@ export default function CoinDetails() {
 
   useEffect(() => {
     socket.on(`${coinname}`, (res: CoinPrice[]) => {
-      console.log(res)
       setCoinPrice(res);
     });
     // CLEAN UP THE EFFECT
@@ -37,7 +36,21 @@ export default function CoinDetails() {
   return (
     <>
       <Header />
-      <Table headers={headers} rows={coinPrice!} />
+
+      <div className="h-1/2">
+        <Table headers={headers} rows={coinPrice!} />
+      </div>
+
+      <div className="w-full flex justify-end mt-10">
+        <span
+          className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+          onClick={() => {
+            history.push("/");
+          }}
+        >
+          Back to Home
+        </span>
+      </div>
 
       <div className="fixed bottom-0 w-full">
         <Banner />
