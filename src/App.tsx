@@ -25,7 +25,7 @@ export default function App() {
   }
   return (
     <>
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <Switch>
           <PrivateRoute exact path="/" component={Dashboard} />
           <Route path="/login">
