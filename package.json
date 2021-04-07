@@ -1,9 +1,12 @@
 {
+  "homepage": "https://staceyhung.github.io/coin-tracking-fontend/",
   "name": "My_Project",
   "version": "1.0.0",
   "description": "",
   "main": "index.tsx",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "start": "webpack serve",
     "build": "webpack --mode production"
   },
