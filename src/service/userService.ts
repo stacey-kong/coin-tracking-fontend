@@ -8,7 +8,7 @@ register,
 login
 };
 
-const api ="http://localhost:9010/api/auth"
+const api ="https://banana-tart-98255.herokuapp.com/api/auth"
 
 
 function authHeader() {
