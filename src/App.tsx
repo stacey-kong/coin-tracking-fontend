@@ -1,5 +1,5 @@
 import {
-  BrowserRouter as Router,
+  HashRouter,
   Route,
   Switch,
   Redirect,
@@ -25,7 +25,7 @@ export default function App() {
   }
   return (
     <>
-      <Router basename={process.env.PUBLIC_URL}>
+      <HashRouter basename="/">
         <Switch>
           <PrivateRoute exact path="/" component={Dashboard} />
           <Route path="/login">
@@ -37,7 +37,7 @@ export default function App() {
           <PrivateRoute path="/coin/:coinname" component={CoinDetails} />
           <Redirect from="*" to="/" />
         </Switch>
-      </Router>
+      </HashRouter>
       {snackbarState && <Snackbar onclick={closeSnackbar} />}
     </>
   );
