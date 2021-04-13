@@ -8,7 +8,7 @@ register,
 login
 };
 
-const api ="https://banana-tart-98255.herokuapp.com/api/auth"
+const api ="https://arcane-chamber-73120.herokuapp.com/api/auth"
 
 
 function authHeader() {

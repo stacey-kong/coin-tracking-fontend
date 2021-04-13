@@ -1,3 +1,3 @@
 import socketIOClient from "socket.io-client";
-const socket = socketIOClient("https://banana-tart-98255.herokuapp.com");
+const socket = socketIOClient("https://arcane-chamber-73120.herokuapp.com");
 export default socket;
