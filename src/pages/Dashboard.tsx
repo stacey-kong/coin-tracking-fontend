@@ -43,6 +43,10 @@ export default function Dashboard() {
     socket.emit("deleteScription", subscriptionPayload, Coin);
   };
 
+  const tableStyle = {
+    height: "55%",
+  };
+
   // get subscibed coin price on dashboard
   useEffect(() => {
     socket.open();
@@ -65,7 +69,7 @@ export default function Dashboard() {
   return (
     <>
       <Header />
-      <div className="h-3/5">
+      <div style={tableStyle}>
         <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
       </div>
 
