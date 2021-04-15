@@ -2,7 +2,7 @@ import Header from "../components/Header/Header";
 import Banner from "../components/Banner/Banner";
 import Table from "../utils/Table/DashBoardTable";
 import ToolsBar from "../components/ToolsBar/ToolsBar";
-import Form from "../components/Form/Form";
+import FilterForm from "../components/Form/FilterForm";
 import Button from "../utils/Button/Button";
 import { useState, useEffect, useRef } from "react";
 import socket from "../socket.io";
@@ -73,11 +73,11 @@ export default function Dashboard() {
         <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
       </div>
 
-      <Form show={formState} onSave={addCoin} onClose={closeFrom} />
+      <FilterForm show={formState} onSave={addCoin} onClose={closeFrom} />
       <div className="fixed bottom-0 w-full">
         <ToolsBar>
-          <Button text="ADD" onclick={showHideForm} />
-          <Button text="MODIFY" onclick={showHideForm} />
+          <Button text="Filter" onclick={showHideForm} />
+          <Button text="Add" onclick={showHideForm} />
         </ToolsBar>
         <Banner />
       </div>
