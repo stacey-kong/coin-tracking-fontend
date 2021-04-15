@@ -1,4 +1,4 @@
-import Header from "../components/Header/Header";
+import Navbar from "../components/Navbar/Navbar";
 import Banner from "../components/Banner/Banner";
 import Table from "../utils/Table/DashBoardTable";
 import ToolsBar from "../components/ToolsBar/ToolsBar";
@@ -101,7 +101,7 @@ export default function Dashboard() {
   };
 
   const tableStyle = {
-    height: "55%",
+    height: "65%",
   };
 
   const closePopup = () => {
@@ -133,7 +133,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header />
+      <Navbar />
       <div style={tableStyle}>
         <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
       </div>

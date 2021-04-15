@@ -1,9 +1,4 @@
-import {
-  HashRouter,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import { Login } from "./pages/Login";
@@ -16,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "./redux/rootReducer";
 import { alertActions } from "./redux/Alert/alert.action";
 import { Socket } from "socket.io-client";
+import Wallet from "./pages/Wallet";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -35,6 +31,7 @@ export default function App() {
             <Register />
           </Route>
           <PrivateRoute path="/coin/:coinname" component={CoinDetails} />
+          <PrivateRoute path="/wallet" component={Wallet} />
           <Redirect from="*" to="/" />
         </Switch>
       </HashRouter>

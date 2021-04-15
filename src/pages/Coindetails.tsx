@@ -1,7 +1,7 @@
 import { useHistory, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import socket from "../socket.io";
-import Header from "../components/Header/Header";
+import Navbar from "../components/Navbar/Navbar";
 import Banner from "../components/Banner/Banner";
 import Table from "../utils/Table/CoinDetailTable";
 
@@ -35,7 +35,7 @@ export default function CoinDetails() {
 
   return (
     <>
-      <Header />
+      <Navbar />
 
       <div className="h-1/2">
         <Table headers={headers} rows={coinPrice!} />

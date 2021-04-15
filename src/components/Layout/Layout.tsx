@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import Header from "../Header/Header";
+import Navbar from "../Navbar/Navbar";
 
 interface LayoutProps {
   children?: React.ReactNode;
@@ -11,7 +11,7 @@ const Body: (prop: LayoutProps) => JSX.Element = (prop: LayoutProps) => {
 
 const Layout: React.FC = ({ children }) => (
   <div>
-    <Header></Header>
+    <Navbar></Navbar>
     <Body>{children}</Body>
   </div>
 );
