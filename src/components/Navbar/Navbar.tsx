@@ -1,17 +1,14 @@
-import { Fragment, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
 import logo from "../../dog.svg";
 
 export default function Navbar() {
-  const history = useHistory();
   const navigation = ["Coin", "Wallet", "function1", "function2"];
   const [open, setopen] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<number>(0);
-  // const switchTabs = (index) => {
-  //   setActiveTab(index);
-  // };
+
   return (
     <>
       {/* navbar wrapper */}
@@ -20,6 +17,7 @@ export default function Navbar() {
         <h2 className="text-indigo-700 font-black text-lg md:text-3xl absolute inset-x-1/4 text-center">
           Check Your Coins!
         </h2>
+
         {/* navmenu on pc site */}
         <div className="hidden md:block">
           <div className="ml-10 flex items-baseline space-x-4">
