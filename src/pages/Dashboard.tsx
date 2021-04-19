@@ -2,6 +2,7 @@ import Header from "../components/Header/Header";
 import Banner from "../components/Banner/Banner";
 import Table from "../utils/Table/DashBoardTable";
 import ToolsBar from "../components/ToolsBar/ToolsBar";
+import AddCoinForm from "../components/Form/AddCoinForm";
 import FilterForm from "../components/Form/FilterForm";
 import Button from "../utils/Button/Button";
 import { useState, useEffect, useRef } from "react";
@@ -19,24 +20,42 @@ export interface CoinList {
 }
 
 export default function Dashboard() {
-  const [formState, setFormState] = useState<boolean>(false);
+  const [filterFormState, setfilterFormState] = useState<boolean>(false);
+  const [addCoinFormState, setAddCoinFormState] = useState<boolean>(false);
   const [coinPriceList, setCoinPriceList] = useState<CoinPriceList[] | null>(
     null
   );
   const subscriptionPayload = localStorage.getItem("id");
   const headers = ["coin", "price"];
 
-  const showHideForm = () => {
-    setFormState((prevformState) => !prevformState);
+  const showHideForm = (form: string) => {
+    switch (form) {
+      case "filter":
+        setfilterFormState((prevState) => !prevState);
+        break;
+
+      case "add":
+        setAddCoinFormState((prevState) => !prevState);
+        break;
+    }
   };
 
-  const closeFrom = () => {
-    setFormState(false);
+  const closeFrom = (form: string) => {
+    switch (form) {
+      case "filter":
+        setfilterFormState(false);
+        break;
+
+      case "add":
+        setAddCoinFormState(false);
+        break;
+    }
   };
 
+  // add or delete coin on tracking board
   const addCoin = (Coin: string) => {
     socket.emit("addScription", subscriptionPayload, Coin);
-    showHideForm();
+    showHideForm("filter");
   };
 
   const deleteCoin = (Coin: string) => {
@@ -72,12 +91,16 @@ export default function Dashboard() {
       <div style={tableStyle}>
         <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
       </div>
-
-      <FilterForm show={formState} onSave={addCoin} onClose={closeFrom} />
+      <AddCoinForm
+        show={addCoinFormState}
+        onSave={addCoin}
+        onClose={closeFrom}
+      ></AddCoinForm>
+      <FilterForm show={filterFormState} onSave={addCoin} onClose={closeFrom} />
       <div className="fixed bottom-0 w-full">
         <ToolsBar>
-          <Button text="Filter" onclick={showHideForm} />
-          <Button text="Add" onclick={showHideForm} />
+          <Button text="Filter" onclick={() => showHideForm("filter")} />
+          <Button text="Add" onclick={() => showHideForm("add")} />
         </ToolsBar>
         <Banner />
       </div>
