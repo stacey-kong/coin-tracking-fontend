@@ -11,13 +11,15 @@ interface FormProps {
   onSave: (arg: any) => void;
   onClose: (arg: string) => void;
 }
+const currency = ["USD", "USDT", "BTC"];
 
 export default function Form(props: FormProps) {
   const showHideClassName = props.show ? "flex" : "hidden";
   const [coinList, setCoinList] = useState<CoinList[]>([]);
+  const [selectedcurrency, setSelectedCurrency] = useState<string>("USD");
   const [addedSelection, setAddedSelection] = useState<string | null>("");
   const subscriptionPayload = localStorage.getItem("id");
-  const currency = ["USD"];
+
   // get add coin form selection list
   useEffect(() => {
     socket.emit("getCoinList", `${subscriptionPayload}`);
@@ -43,6 +45,14 @@ export default function Form(props: FormProps) {
     setAddedSelection(selection);
   };
 
+  const handleCurrencySelectionChange = (selection: string) => {
+    setSelectedCurrency(selection);
+  };
+
+  const resetForm = () => {
+    setAddedSelection("");
+    setSelectedCurrency("USD");
+  };
   return (
     <form
       // action="#"
@@ -72,20 +82,26 @@ export default function Form(props: FormProps) {
             element={coinSelection as coinSelection}
             label="Filter"
             placeHolder="Coin"
+            value={addedSelection ?? ""}
             selectAction={onSelected}
           />
 
           <SelectionList
             element={currencySelection as defaultSelection}
             label="Currency"
+            value={selectedcurrency}
             placeHolder="Base Currency"
+            selectAction={handleCurrencySelectionChange}
           />
         </div>
         <div className="px-4 py-3 mt-2  mb-0 bg-gray-50 text-right sm:px-6">
           <button
             // type="submit"
             className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            onClick={() => props.onSave(addedSelection)}
+            onClick={() => {
+              props.onSave(addedSelection);
+              resetForm();
+            }}
           >
             Save
           </button>

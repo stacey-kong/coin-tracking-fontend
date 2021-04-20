@@ -14,6 +14,7 @@ export interface defaultSelection {
 
 interface SelectionMenuProps {
   label?: string;
+  value: string;
   placeHolder?: string;
   element: coinSelection | defaultSelection;
   selectAction?: (selection: string) => void;
@@ -21,9 +22,7 @@ interface SelectionMenuProps {
 
 export default function Selection(props: SelectionMenuProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selected, setSelected] = useState<string>(props.placeHolder!);
   const addselection = function (selection: string) {
-    setSelected(selection);
     setIsOpen(false);
     if (props.selectAction) {
       let selectAction = props.selectAction;
@@ -41,14 +40,16 @@ export default function Selection(props: SelectionMenuProps) {
       <div className="mt-1 relative">
         <button
           type="button"
-          className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          className="relative w-full h-10 bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           aria-haspopup="listbox"
           aria-expanded="true"
           aria-labelledby="listbox-label"
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="flex items-center">
-            <span className="ml-3 block truncate">{selected}</span>
+            <span className="ml-3 block truncate">
+              {props.value ?? props.placeHolder}
+            </span>
           </span>
           <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
             <svg
