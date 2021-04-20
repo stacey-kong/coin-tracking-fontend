@@ -1,3 +1,3 @@
 import socketIOClient from "socket.io-client";
-const socket = socketIOClient("https://arcane-chamber-73120.herokuapp.com");
+const socket = socketIOClient(process.env.BACKEND_API!);
 export default socket;

@@ -3,13 +3,12 @@ export interface Credentials {
   password: string;
 }
 
-export const userService ={
-register,
-login
+export const userService = {
+  register,
+  login,
 };
 
-const api ="https://arcane-chamber-73120.herokuapp.com/api/auth"
-
+const api = `${process.env.BACKEND_API}api/auth`;
 
 function authHeader() {
   // return authorization header with jwt token
@@ -24,21 +23,20 @@ function authHeader() {
 
 async function login(Props: Credentials) {
   const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(Props)
-};
-    return fetch(`${api}/login`, requestOptions
-    ).then((data) => data.json());
-  }
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(Props),
+  };
+  return fetch(`${api}/login`, requestOptions).then((data) => data.json());
+}
 
 async function register(Props: Credentials) {
-    const requestOptions ={
-    method:"POST",
+  const requestOptions = {
+    method: "POST",
     headers: {
-        "Content-Type": "application/json",
-      },
-    body: JSON.stringify(Props),    
-    }
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(Props),
+  };
   return fetch(`${api}/register`, requestOptions).then((data) => data.json());
 }

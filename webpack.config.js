@@ -1,8 +1,10 @@
 const path = require("path");
 const tailwindcss = require("tailwindcss");
 const autoprefixer = require("autoprefixer"); // help tailwindcss to work
+const Dotenv = require("dotenv-webpack"); //enviroment variable
 
 module.exports = (env, argv) => {
+  const envPath = env.ENVIRONMENT ? `.env.${env.ENVIRONMENT}` : ".env";
   return {
     mode: "development",
     entry: ["babel-polyfill", "./src/index.tsx"],
@@ -41,12 +43,11 @@ module.exports = (env, argv) => {
         },
       ],
     },
-
-    // externals: {
-    //   react: "React",
-    //   "react-dom": "ReactDOM",
-    // },
-
+    plugins: [
+      new Dotenv({
+        path: envPath,
+      }),
+    ],
     devServer: {
       historyApiFallback: true,
       contentBase: path.join(__dirname, "dist"),
