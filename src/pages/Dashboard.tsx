@@ -2,7 +2,7 @@ import Header from "../components/Header/Header";
 import Banner from "../components/Banner/Banner";
 import Table from "../utils/Table/DashBoardTable";
 import ToolsBar from "../components/ToolsBar/ToolsBar";
-import AddCoinForm from "../components/Form/AddCoinForm";
+import AddCoinForm, { CoinStatsProps } from "../components/Form/AddCoinForm";
 import FilterForm from "../components/Form/FilterForm";
 import Button from "../utils/Button/Button";
 import { useState, useEffect, useRef } from "react";
@@ -53,13 +53,20 @@ export default function Dashboard() {
   };
 
   // add or delete coin on tracking board
-  const addCoin = (Coin: string) => {
+  const addScription = (Coin: string) => {
     socket.emit("addScription", subscriptionPayload, Coin);
     showHideForm("filter");
   };
 
   const deleteCoin = (Coin: string) => {
     socket.emit("deleteScription", subscriptionPayload, Coin);
+  };
+
+  //add Coin on database
+  const addCoin = (props: CoinStatsProps) => {
+    console.log(props);
+    socket.emit("addCoin",props);
+    showHideForm("add");
   };
 
   const tableStyle = {
@@ -96,7 +103,11 @@ export default function Dashboard() {
         onSave={addCoin}
         onClose={closeFrom}
       ></AddCoinForm>
-      <FilterForm show={filterFormState} onSave={addCoin} onClose={closeFrom} />
+      <FilterForm
+        show={filterFormState}
+        onSave={addScription}
+        onClose={closeFrom}
+      />
       <div className="fixed bottom-0 w-full">
         <ToolsBar>
           <Button text="Filter" onclick={() => showHideForm("filter")} />
