@@ -8,7 +8,7 @@ export const userService = {
   login,
 };
 
-const api = `${process.env.BACKEND_API}api/auth`;
+const api = `${process.env.BACKEND_API}/api/auth`;
 
 function authHeader() {
   // return authorization header with jwt token
