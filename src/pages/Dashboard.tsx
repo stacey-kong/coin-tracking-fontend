@@ -7,6 +7,7 @@ import FilterForm from "../components/Form/FilterForm";
 import Button from "../utils/Button/Button";
 import { useState, useEffect, useRef } from "react";
 import socket from "../socket.io";
+import Popup, { PopupData } from "../components/Popup/Popup";
 
 export interface CoinPriceList {
   name: string;
@@ -19,6 +20,11 @@ export interface CoinList {
   subscribed: boolean;
 }
 
+interface addCoinRes {
+  status: boolean;
+  message: string;
+}
+
 export default function Dashboard() {
   const [filterFormState, setfilterFormState] = useState<boolean>(false);
   const [addCoinFormState, setAddCoinFormState] = useState<boolean>(false);
@@ -27,6 +33,13 @@ export default function Dashboard() {
   );
   const subscriptionPayload = localStorage.getItem("id");
   const headers = ["coin", "price"];
+  const [popupState, setPopupState] = useState<PopupData>({
+    open: false,
+    icon: "",
+    title: "",
+    message: "",
+    button: "",
+  });
 
   const showHideForm = (form: string) => {
     switch (form) {
@@ -65,12 +78,38 @@ export default function Dashboard() {
   //add Coin on database
   const addCoin = (props: CoinStatsProps) => {
     console.log(props);
-    socket.emit("addCoin",props);
+    socket.emit("addCoin", props, function (data: addCoinRes) {
+      if (data.status) {
+        setPopupState({
+          open: true,
+          icon: "success",
+          title: "Add coin success",
+          message: data.message,
+          button: "OK",
+        });
+      } else {
+        setPopupState({
+          open: true,
+          icon: "error",
+          title: "Add coin fail",
+          message: data.message,
+          button: "OK",
+        });
+      }
+    });
     showHideForm("add");
   };
 
   const tableStyle = {
     height: "55%",
+  };
+
+  const closePopup = () => {
+    setPopupState((prevState) => ({
+      ...prevState,
+      open: false,
+    }));
+    window.location.reload();
   };
 
   // get subscibed coin price on dashboard
@@ -115,6 +154,7 @@ export default function Dashboard() {
         </ToolsBar>
         <Banner />
       </div>
+      <Popup data={popupState} onClose={closePopup} />
     </>
   );
 }
