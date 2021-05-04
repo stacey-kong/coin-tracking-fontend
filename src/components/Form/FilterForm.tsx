@@ -21,16 +21,11 @@ export default function Form(props: FormProps) {
   const subscriptionPayload = localStorage.getItem("id");
 
   // get add coin form selection list
-  useEffect(() => {
-    socket.emit("getCoinList", `${subscriptionPayload}`);
-    socket.on("coinList", (res: CoinList[]) => {
-      setCoinList(res);
-    });
-
-    return () => {
-      socket.off("coinList");
-    };
-  }, []);
+  // useEffect(
+  //   return () => {
+  //     socket.off("coinList");
+  //   };
+  // }, []);
 
   const coinSelection = {
     type: "coinList",
@@ -39,6 +34,12 @@ export default function Form(props: FormProps) {
   const currencySelection = {
     type: "default",
     children: currency,
+  };
+  const openSelection = () => {
+    socket.emit("getCoinList", `${subscriptionPayload}`);
+    socket.on("coinList", (res: CoinList[]) => {
+      setCoinList(res);
+    });
   };
 
   const onSelected = (selection: string) => {
@@ -53,6 +54,7 @@ export default function Form(props: FormProps) {
     setAddedSelection("");
     setSelectedCurrency("USD");
   };
+
   return (
     <form
       // action="#"
@@ -84,6 +86,7 @@ export default function Form(props: FormProps) {
             placeHolder="Coin"
             value={addedSelection ?? ""}
             selectAction={onSelected}
+            onclick={openSelection}
           />
 
           <SelectionList
