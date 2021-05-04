@@ -1,5 +1,4 @@
-import Navbar from "../components/Navbar/Navbar";
-import Banner from "../components/Banner/Banner";
+import { Layout2 } from "../components/Layout/Layout";
 import Table from "../utils/Table/DashBoardTable";
 import ToolsBar from "../components/ToolsBar/ToolsBar";
 import AddCoinForm, { CoinStatsProps } from "../components/Form/AddCoinForm";
@@ -100,9 +99,9 @@ export default function Dashboard() {
     showHideForm("add");
   };
 
-  const tableStyle = {
-    height: "65%",
-  };
+  // const tableStyle = {
+  //   height: "85%",
+  // };
 
   const closePopup = () => {
     setPopupState((prevState) => ({
@@ -133,26 +132,26 @@ export default function Dashboard() {
 
   return (
     <>
-      <Navbar />
-      <div style={tableStyle}>
-        <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
-      </div>
-      <AddCoinForm
-        show={addCoinFormState}
-        onSave={addCoin}
-        onClose={closeFrom}
-      ></AddCoinForm>
-      <FilterForm
-        show={filterFormState}
-        onSave={addScription}
-        onClose={closeFrom}
-      />
-      <div className="fixed bottom-0 w-full">
-        <ToolsBar>
-          <Button text="Filter" onclick={() => showHideForm("filter")} />
-          <Button text="Add" onclick={() => showHideForm("add")} />
-        </ToolsBar>
-        <Banner />
+      <div className="w-full h-full">
+        <div className="h-5/6">
+          <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
+        </div>
+        <AddCoinForm
+          show={addCoinFormState}
+          onSave={addCoin}
+          onClose={closeFrom}
+        ></AddCoinForm>
+        <FilterForm
+          show={filterFormState}
+          onSave={addScription}
+          onClose={closeFrom}
+        />
+        <div className="self-end">
+          <ToolsBar>
+            <Button text="Filter" onclick={() => showHideForm("filter")} />
+            <Button text="Add" onclick={() => showHideForm("add")} />
+          </ToolsBar>
+        </div>
       </div>
       <Popup data={popupState} onClose={closePopup} />
     </>

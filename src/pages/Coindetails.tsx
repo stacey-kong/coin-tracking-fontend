@@ -1,8 +1,7 @@
 import { useHistory, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import socket from "../socket.io";
-import Navbar from "../components/Navbar/Navbar";
-import Banner from "../components/Banner/Banner";
+import { Layout2 } from "../components/Layout/Layout";
 import Table from "../utils/Table/CoinDetailTable";
 
 export interface CoinPrice {
@@ -34,13 +33,10 @@ export default function CoinDetails() {
   }, []);
 
   return (
-    <>
-      <Navbar />
-
+    <Layout2>
       <div className="h-1/2">
         <Table headers={headers} rows={coinPrice!} />
       </div>
-
       <div className="w-full flex justify-end mt-10">
         <span
           className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
@@ -51,10 +47,6 @@ export default function CoinDetails() {
           Back to Home
         </span>
       </div>
-
-      <div className="fixed bottom-0 w-full">
-        <Banner />
-      </div>
-    </>
+    </Layout2>
   );
 }

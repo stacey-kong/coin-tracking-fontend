@@ -5,6 +5,7 @@ import { Login } from "./pages/Login";
 import Register from "./pages/Register";
 import CoinDetails from "./pages/Coindetails";
 import Snackbar from "./components/Snackbar/SnackBar";
+import { Layout2 } from "./components/Layout/Layout";
 
 // redux
 import { useSelector, useDispatch } from "react-redux";
@@ -23,15 +24,17 @@ export default function App() {
     <>
       <HashRouter basename="/">
         <Switch>
-          <PrivateRoute exact path="/" component={Dashboard} />
+          <Layout2>
+            <PrivateRoute exact path="/" component={Dashboard} />
+            <PrivateRoute path="/coin/:coinname" component={CoinDetails} />
+            <PrivateRoute path="/wallet" component={Wallet} />
+          </Layout2>
           <Route path="/login">
             <Login />
           </Route>
           <Route path="/register">
             <Register />
           </Route>
-          <PrivateRoute path="/coin/:coinname" component={CoinDetails} />
-          <PrivateRoute path="/wallet" component={Wallet} />
           <Redirect from="*" to="/" />
         </Switch>
       </HashRouter>

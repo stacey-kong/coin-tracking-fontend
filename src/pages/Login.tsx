@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import Layout from "../components/Layout/Layout";
+import {Layout }from "../components/Layout/Layout";
 import { alertActions } from "../redux/Alert/alert.action";
 
 import { userActions } from "../redux/User/user.action";

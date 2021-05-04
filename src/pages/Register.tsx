@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import Layout from "../components/Layout/Layout";
+import {Layout} from "../components/Layout/Layout";
 
 // redux
 import { useDispatch } from "react-redux";
