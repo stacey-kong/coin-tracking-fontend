@@ -7,9 +7,18 @@ import SelectionList, {
   coinSelection,
 } from "../components/SelectMenus/SelectionList";
 
+interface lendingInterest {
+  today: number;
+  week: number;
+  month: number;
+}
+
 export default function Wallet() {
   const history = useHistory();
   const [coinList, setCoinList] = useState<CoinList[]>([]);
+  const [amount, setAmount] = useState<number>(0);
+  const [interest, setInterest] = useState<lendingInterest | null>(null);
+  const subscriptionPayload = localStorage.getItem("id");
   const openSelection = () => {
     socket.on("coinList", (res: CoinList[]) => {
       setCoinList(res);
@@ -19,8 +28,36 @@ export default function Wallet() {
     type: "coinList",
     children: coinList,
   };
+  const updateLendingValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(+e.target.value);
+  };
+  const reviseAmount = () => {
+    socket.emit("reviseLending", amount, subscriptionPayload);
+    socket.on("lendingInterest", (res: lendingInterest) => {
+      setInterest(res);
+    });
+  };
+
+  useEffect(() => {
+    socket.open();
+    socket.emit("lending", subscriptionPayload);
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("lendingInterest", (res: lendingInterest) => {
+      setInterest(res);
+    });
+    // CLEAN UP THE EFFECT
+    return () => {
+      socket.off("lendingInterest");
+    };
+  }, []);
+
   return (
-    <>
+    <div className="p-4 h-full">
       <div className="h-1/4">
         <SelectionList
           element={coinSelection as coinSelection}
@@ -29,18 +66,38 @@ export default function Wallet() {
           value={""}
           onclick={openSelection}
         />
+        <div>
+          <div className="inline-flex my-4 w-full">
+            <h3 className="w-1/2 text-2xl">Lending Amount</h3>
+            <input
+              className="w-1/2 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-xl rounded-md border-none text-right"
+              type="text"
+              value={amount}
+              onChange={updateLendingValue}
+            ></input>
+          </div>
+          <span
+            className="p-2 bg-blue-300 text-white text-center font-bold text-xl float-right"
+            onClick={reviseAmount}
+          >
+            submit
+          </span>
+        </div>
       </div>
       <div className="h-1/4">
         <table className="text-left space-around w-full h-full">
           <tbody>
             <tr>
               <th>Today's total</th>
+              <td>{interest?.today}</td>
             </tr>
             <tr>
               <th>This week's total</th>
+              <td>{interest?.week}</td>
             </tr>
             <tr>
               <th>This month's total</th>
+              <td>{interest?.month}</td>
             </tr>
           </tbody>
         </table>
@@ -55,6 +112,6 @@ export default function Wallet() {
           Back to Home
         </span>
       </div>
-    </>
+    </div>
   );
 }
