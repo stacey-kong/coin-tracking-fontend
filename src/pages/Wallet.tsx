@@ -31,24 +31,24 @@ export default function Wallet() {
   const updateLendingValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(+e.target.value);
   };
+
   const reviseAmount = () => {
-    socket.emit("reviseLending", amount, subscriptionPayload);
-    socket.on("lendingInterest", (res: lendingInterest) => {
-      setInterest(res);
-    });
+    socket.emit("reviseLending", subscriptionPayload, amount);
   };
 
   useEffect(() => {
     socket.open();
     socket.emit("lending", subscriptionPayload);
     return () => {
+      socket.off("lending");
       socket.close();
     };
   }, []);
 
   useEffect(() => {
-    socket.on("lendingInterest", (res: lendingInterest) => {
-      setInterest(res);
+    socket.on("lendingInterest", (res: [lendingInterest, number]) => {
+      setInterest(res[0]);
+      setAmount(res[1]);
     });
     // CLEAN UP THE EFFECT
     return () => {
@@ -102,7 +102,7 @@ export default function Wallet() {
           </tbody>
         </table>
       </div>
-      <div className="w-full flex justify-end mt-10 z-10">
+      <div className="w-full flex justify-end mt-40 z-10">
         <span
           className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
           onClick={() => {
