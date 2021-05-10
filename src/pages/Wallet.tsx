@@ -13,11 +13,17 @@ interface lendingInterest {
   month: number;
 }
 
+enum Timezone {
+  LOCAL = "local",
+  UTC = "UTC",
+}
+
 export default function Wallet() {
   const history = useHistory();
   const [coinList, setCoinList] = useState<CoinList[]>([]);
   const [amount, setAmount] = useState<number>(0);
   const [interest, setInterest] = useState<lendingInterest | null>(null);
+  const [queryLocaltime, setQueryLocaltime] = useState<boolean>(false);
   const subscriptionPayload = localStorage.getItem("id");
   const openSelection = () => {
     socket.on("coinList", (res: CoinList[]) => {
@@ -28,22 +34,28 @@ export default function Wallet() {
     type: "coinList",
     children: coinList,
   };
+
   const updateLendingValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(+e.target.value);
   };
 
   const reviseAmount = () => {
     socket.emit("reviseLending", subscriptionPayload, amount);
+    setQueryLocaltime(false);
   };
 
   useEffect(() => {
+    console.log(`emit lending`);
     socket.open();
-    socket.emit("lending", subscriptionPayload);
+    queryLocaltime
+      ? socket.emit("lending", subscriptionPayload, Timezone.LOCAL)
+      : socket.emit("lending", subscriptionPayload, Timezone.UTC);
+
     return () => {
       socket.off("lending");
       socket.close();
     };
-  }, []);
+  }, [queryLocaltime]);
 
   useEffect(() => {
     socket.on("lendingInterest", (res: [lendingInterest, number]) => {
@@ -57,8 +69,8 @@ export default function Wallet() {
   }, []);
 
   return (
-    <div className="p-4 h-full">
-      <div className="h-1/4">
+    <div className="px-4 py-10 h-full box-border">
+      <div className="h-1/2">
         <SelectionList
           element={coinSelection as coinSelection}
           label="Select your coin"
@@ -67,7 +79,7 @@ export default function Wallet() {
           onclick={openSelection}
         />
         <div>
-          <div className="inline-flex my-4 w-full">
+          <div className="inline-flex my-4 w-full h-1/2">
             <h3 className="w-1/2 text-2xl">Lending Amount</h3>
             <input
               className="w-1/2 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-xl rounded-md border-none text-right"
@@ -76,15 +88,28 @@ export default function Wallet() {
               onChange={updateLendingValue}
             ></input>
           </div>
-          <span
-            className="p-2 bg-blue-300 text-white text-center font-bold text-xl float-right"
-            onClick={reviseAmount}
-          >
-            submit
-          </span>
+          <div className="items-center h-1/2">
+            <input
+              type="checkbox"
+              id="queryTimezone"
+              name="queryTimezone"
+              checked={queryLocaltime}
+              onChange={() => setQueryLocaltime((prev) => !prev)}
+            />
+            <label htmlFor="queryTimezone" className="pl-2 ">
+              Show in Local time
+            </label>
+
+            <span
+              className="p-2 bg-blue-300 text-white text-center font-bold text-xl float-right"
+              onClick={reviseAmount}
+            >
+              submit
+            </span>
+          </div>
         </div>
       </div>
-      <div className="h-1/4">
+      <div className="h-1/2">
         <table className="text-left space-around w-full h-full">
           <tbody>
             <tr>
@@ -102,9 +127,9 @@ export default function Wallet() {
           </tbody>
         </table>
       </div>
-      <div className="w-full flex justify-end mt-40 z-10">
+      <div className="w-full flex fixed top-2/3 justify-end z-10">
         <span
-          className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+          className="pl-2 pr-5 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
           onClick={() => {
             history.push("/");
           }}
