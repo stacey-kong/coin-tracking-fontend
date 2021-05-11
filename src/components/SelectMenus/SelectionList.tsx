@@ -53,7 +53,7 @@ export default function Selection(props: SelectionMenuProps) {
         >
           <span className="flex items-center">
             <span className="ml-3 block truncate">
-              {props.value ?? props.placeHolder}
+              {props.value ? props.value :props.placeHolder}
             </span>
           </span>
           <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">

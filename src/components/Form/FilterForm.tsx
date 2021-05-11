@@ -84,7 +84,7 @@ export default function Form(props: FormProps) {
             element={coinSelection as coinSelection}
             label="Filter"
             placeHolder="Coin"
-            value={addedSelection ?? ""}
+            value={addedSelection ? addedSelection:""}
             selectAction={onSelected}
             onclick={openSelection}
           />
