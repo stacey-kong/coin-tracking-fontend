@@ -33,7 +33,7 @@ export default function CoinDetails() {
   }, []);
 
   return (
-    <Layout2>
+    <>
       <div className="h-1/2">
         <Table headers={headers} rows={coinPrice!} />
       </div>
@@ -47,6 +47,6 @@ export default function CoinDetails() {
           Back to Home
         </span>
       </div>
-    </Layout2>
+     </>
   );
 }
