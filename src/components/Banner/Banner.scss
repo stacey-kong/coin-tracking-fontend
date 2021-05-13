@@ -1,6 +1,10 @@
 section {
-    border: 2px dotted #ac307c;
-    font-size: 150%;
-    text-align: center;
-    padding: 0.8rem;
-  }
+  border: 2px dotted #ac307c;
+  font-size: 150%;
+  text-align: center;
+  padding: 0.8rem;
+  height: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}

@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import "./Layout.scss";
 import Header from "../Header/Header";
 import Navbar from "../Navbar/Navbar";
 import Banner from "../Banner/Banner";
@@ -15,17 +15,19 @@ const Layout: React.FC = ({ children }) => (
 );
 
 const Layout2: React.FC = ({ children }) => (
-  <div className="h-screen">
-    <div>
+
+<>
+    <div className="nav">
       <Navbar />
     </div>
 
-    <div className="h-4/5">{children}</div>
+    <div className="main">{children}</div>
 
-    <div className="fixed bottom-0 w-full ">
+    <div className="bottom-banner">
       <Banner />
     </div>
-  </div>
+
+</>
 );
 
 export { Layout, Layout2 };

@@ -18,7 +18,7 @@ export default function Navbar() {
   return (
     <>
       {/* navbar wrapper */}
-      <div className="w-full h-14 flex justify-between bg-blue-300 md:h-20 items-center relative">
+      <div className="w-full h-full flex justify-between bg-blue-300 md:h-20 items-center relative flex-1">
         <img src={logo} alt="doglogo" className="h-10 m-auto mx-0 " />
         <h2 className="text-indigo-700 font-black text-lg md:text-3xl absolute inset-x-1/4 text-center w-1/2">
           Check Your Coins!
@@ -68,19 +68,18 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-
       {/* navmenu on mobile site */}
       <div
-        className="w-full h-full"
+        className={`${
+          open ? "block" : "hidden"
+        } w-full z-40`}
         onClick={(e) => {
           e.stopPropagation();
           setopen(false);
         }}
       >
         <div
-          className={`${
-            open ? "block" : "hidden"
-          } px-2 pt-2 pb-3 space-y-1 sm:px-3 w-full bg-blue-300`}
+          className="px-2 pt-2 pb-3 space-y-1 sm:px-3 w-full bg-blue-300"
         >
           {navigation.map((item, itemIdx) => (
             <Link

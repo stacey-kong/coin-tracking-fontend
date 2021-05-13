@@ -1,4 +1,3 @@
-import { Layout2 } from "../components/Layout/Layout";
 import Table from "../utils/Table/DashBoardTable";
 import ToolsBar from "../components/ToolsBar/ToolsBar";
 import AddCoinForm, { CoinStatsProps } from "../components/Form/AddCoinForm";
@@ -146,7 +145,7 @@ export default function Dashboard() {
           onSave={addScription}
           onClose={closeFrom}
         />
-        <div className="self-end">
+        <div className="self-end h-1/6">
           <ToolsBar>
             <Button text="Filter" onclick={() => showHideForm("filter")} />
             <Button text="Add" onclick={() => showHideForm("add")} />
