@@ -29,7 +29,7 @@ export function Login() {
         localStorage.setItem("id", data.results.userId);
         dispatch(userActions.success());
         dispatch(alertActions.success(data.message));
-        history.push("dashboard");
+        history.push("/");
       }
     });
   };
