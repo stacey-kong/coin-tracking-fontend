@@ -139,7 +139,7 @@ export default function Wallet() {
           value={""}
           onclick={openSelection}
         />
-        <div>
+        <div className="h-3/4">
           <div className="inline-flex my-4 w-full h-1/2">
             <h3 className="w-1/2 text-2xl">Lending Amount</h3>
             <input
