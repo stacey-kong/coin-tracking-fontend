@@ -11,12 +11,13 @@ import { Layout2 } from "./components/Layout/Layout";
 import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "./redux/rootReducer";
 import { alertActions } from "./redux/Alert/alert.action";
-import { Socket } from "socket.io-client";
+import Loading from "./components/LoadingPage/Loading";
 import Wallet from "./pages/Wallet";
 
 export default function App() {
   const dispatch = useDispatch();
   const snackbarState = useSelector((state: AppState) => state.alert.open);
+  const loadingState = useSelector((state: AppState) => state.loading.loading);
   function closeSnackbar() {
     dispatch(alertActions.clear());
   }
@@ -39,6 +40,7 @@ export default function App() {
         </Switch>
       </HashRouter>
       {snackbarState && <Snackbar onclick={closeSnackbar} />}
+      {loadingState && <Loading />}
     </>
   );
 }

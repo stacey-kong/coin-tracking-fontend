@@ -1,0 +1,40 @@
+@keyframes example {
+  0% {
+    top: 15rem;
+  }
+  25% {
+    top: 13rem;
+    transform: rotate(25deg);
+  }
+  50% {
+    top: 15rem;
+    transform: rotate(0deg);
+  }
+  75% {
+    top: 13rem;
+    transform: rotate(-25deg);
+  }
+  100% {
+    top: 15rem;
+    transform: rotate(0deg);
+  }
+}
+
+/* The element to apply the animation to */
+.loadingWrapper {
+  background-color: rgba(146, 142, 142, 0.1);
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 999;
+  justify-content: center;
+  display: flex;
+}
+.loadingWrapper img {
+  width: 100px;
+  height: 100px;
+  animation-name: example;
+  animation: example 5s infinite;
+  margin: auto;
+}

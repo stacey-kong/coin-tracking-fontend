@@ -7,7 +7,8 @@ import SelectionList, {
   coinSelection,
 } from "../components/SelectMenus/SelectionList";
 import LineChart from "../components/Charts/LineChart";
-
+import { useDispatch } from "react-redux";
+import { loadingActions } from "../redux/Loading/loading.action";
 interface lendingInterest {
   today: number;
   week: number;
@@ -45,11 +46,14 @@ export default function Wallet() {
     children: coinList,
   };
 
+  const dispatch = useDispatch();
+
   const updateLendingValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(+e.target.value);
   };
 
   const reviseAmount = () => {
+    dispatch(loadingActions.loading());
     socket.emit("reviseLending", subscriptionPayload, amount);
     setQueryLocaltime(false);
   };
@@ -58,6 +62,7 @@ export default function Wallet() {
     const now = new Date();
     const noInweek = now.getDay();
     const monWeek = now.setHours(0, 0, 0, 0) - (noInweek - 1) * oneDay;
+    dispatch(loadingActions.loading());
     socket.emit("dailyLending", subscriptionPayload, monWeek);
     setActiveTab(1);
     setTimestamp(monWeek);
@@ -87,8 +92,8 @@ export default function Wallet() {
   };
 
   useEffect(() => {
-    console.log(`emit lending`);
     socket.open();
+    dispatch(loadingActions.loading());
     queryLocaltime
       ? socket.emit("lending", subscriptionPayload, Timezone.LOCAL)
       : socket.emit("lending", subscriptionPayload, Timezone.UTC);
@@ -103,7 +108,9 @@ export default function Wallet() {
     socket.on("lendingInterest", (res: [lendingInterest, number]) => {
       setInterest(res[0]);
       setAmount(res[1]);
+      dispatch(loadingActions.complete());
     });
+  
     // CLEAN UP THE EFFECT
     return () => {
       socket.off("lendingInterest");
@@ -114,7 +121,9 @@ export default function Wallet() {
     socket.on("dailyInterest", (res: Interest[]) => {
       console.log(res);
       setdailyInterest(res);
+      dispatch(loadingActions.complete());
     });
+
     // CLEAN UP THE EFFECT
     return () => {
       socket.off("lendingInterest");

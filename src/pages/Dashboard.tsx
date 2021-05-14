@@ -6,6 +6,8 @@ import Button from "../utils/Button/Button";
 import { useState, useEffect, useRef } from "react";
 import socket from "../socket.io";
 import Popup, { PopupData } from "../components/Popup/Popup";
+import { useDispatch } from "react-redux";
+import { loadingActions } from "../redux/Loading/loading.action";
 
 export interface CoinPriceList {
   name: string;
@@ -26,9 +28,8 @@ interface addCoinRes {
 export default function Dashboard() {
   const [filterFormState, setfilterFormState] = useState<boolean>(false);
   const [addCoinFormState, setAddCoinFormState] = useState<boolean>(false);
-  const [coinPriceList, setCoinPriceList] = useState<CoinPriceList[] | null>(
-    null
-  );
+  const [coinPriceList, setCoinPriceList] =
+    useState<CoinPriceList[] | null>(null);
   const subscriptionPayload = localStorage.getItem("id");
   const headers = ["coin", "price"];
   const [popupState, setPopupState] = useState<PopupData>({
@@ -38,6 +39,7 @@ export default function Dashboard() {
     message: "",
     button: "",
   });
+  const dispatch =useDispatch()
 
   const showHideForm = (form: string) => {
     switch (form) {
@@ -65,11 +67,13 @@ export default function Dashboard() {
 
   // add or delete coin on tracking board
   const addScription = (Coin: string) => {
+    dispatch(loadingActions.loading())
     socket.emit("addScription", subscriptionPayload, Coin);
     showHideForm("filter");
   };
 
   const deleteCoin = (Coin: string) => {
+    dispatch(loadingActions.loading())
     socket.emit("deleteScription", subscriptionPayload, Coin);
   };
 
@@ -113,6 +117,7 @@ export default function Dashboard() {
   // get subscibed coin price on dashboard
   useEffect(() => {
     socket.open();
+    dispatch(loadingActions.loading())
     socket.emit("averageprice", `${subscriptionPayload}`);
     return () => {
       socket.close();
@@ -122,6 +127,7 @@ export default function Dashboard() {
   useEffect(() => {
     socket.on("allPrice", (res: CoinPriceList[]) => {
       setCoinPriceList(res);
+      dispatch(loadingActions.complete())
     });
     // CLEAN UP THE EFFECT
     return () => {
