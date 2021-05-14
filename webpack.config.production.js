@@ -2,33 +2,34 @@ const path = require("path");
 const tailwindcss = require("tailwindcss");
 const autoprefixer = require("autoprefixer"); // help tailwindcss to work
 const Dotenv = require("dotenv-webpack"); //enviroment variable
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-
 
 module.exports = (env, argv) => {
   const envPath = env.ENVIRONMENT ? `.env.${env.ENVIRONMENT}` : ".env";
   return {
-    mode: "development",
+    mode: "production",
     entry: ["babel-polyfill", "./src/index.tsx"],
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "[name].bundle.js",
+      clean: true,
+      //   chunkFilename: '[id].chunk.js',
+      //   publicPath: './dist'
     },
 
     resolve: {
       extensions: [".tsx", ".ts", ".js", ".json"],
     },
 
-    // Enable sourcemaps for debugging webpack's output.
-    devtool: "source-map",
-
     module: {
       rules: [
         // All files with a '.ts' or '.tsx' extension will be handled by 'babel-loader'.
-        { test: /\.tsx?$/, loader: "babel-loader" },
+        { test: /\.(tsx?|js)$/, loader: "babel-loader" },
 
         // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-        { test: /\.js$/, loader: "source-map-loader", enforce: "pre" },
+        // { test: /\.js$/, loader: "source-map-loader", enforce: "pre" },
         {
           test: /\.(scss|css)$/,
           use: [
@@ -65,11 +66,23 @@ module.exports = (env, argv) => {
         template: "./src/index.html",
       }),
     ],
-    devServer: {
-      historyApiFallback: true,
-      contentBase: path.join(__dirname, "dist"),
-      compress: true,
-      port: 9009,
+    optimization: {
+      chunkIds: "size",
+      // method of generating ids for chunks
+      moduleIds: "size",
+      // method of generating ids for modules
+      mangleExports: "size",
+      // rename export names to shorter names
+      minimize: true,
+      // minimize the output files
+      minimizer: [new CssMinimizerPlugin(), "..."],
+      // minimizers to use for the output files
+
+      /* Advanced optimizations (click to show) */
+
+      splitChunks: {
+        chunks: "all",
+      },
     },
   };
 };
