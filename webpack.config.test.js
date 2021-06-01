@@ -8,6 +8,8 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = (env, argv) => {
   const envPath = env.ENVIRONMENT ? `.env.${env.ENVIRONMENT}` : ".env";
@@ -61,6 +63,7 @@ module.exports = (env, argv) => {
       new Dotenv({
         path: envPath,
       }),
+
       new HtmlWebpackPlugin({
         inject: "body",
         template: "./src/index.html",
@@ -69,6 +72,10 @@ module.exports = (env, argv) => {
         prettyPrint: true,
         filename: "assets.json",
         path: path.resolve(__dirname, "dist"),
+      }),
+
+      new BundleAnalyzerPlugin({
+        analyzerPort: 3001,
       }),
     ],
     optimization: {
@@ -114,6 +121,7 @@ module.exports = (env, argv) => {
             test: /[\\/]node_modules[\\/]/,
             name: "vendors",
             chunks: "all",
+            maxSize: 50000,
           },
         },
       },
