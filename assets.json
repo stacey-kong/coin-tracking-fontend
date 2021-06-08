@@ -1,0 +1,33 @@
+{
+  "index": {
+    "js": "auto/index.bundle.js"
+  },
+  "another": {
+    "js": "auto/another.bundle.js"
+  },
+  "shared": {
+    "js": "auto/shared.bundle.js"
+  },
+  "runtime": {
+    "js": "auto/runtime.bundle.js"
+  },
+  "": {
+    "js": [
+      "auto/3.bundle.js",
+      "auto/2.bundle.js",
+      "auto/6.bundle.js",
+      "auto/4.bundle.js",
+      "auto/11.bundle.js",
+      "auto/5.bundle.js",
+      "auto/10.bundle.js",
+      "auto/7.bundle.js",
+      "auto/12.bundle.js"
+    ],
+    "svg": [
+      "auto/images/1285a5bfb07b1c3b03872ed29db5f243-dog.svg",
+      "auto/images/083856526c4794262e146cbb1c4b6c16-checked.svg",
+      "auto/images/8614559796aa54805a84a7a47b1f1378-report.svg"
+    ],
+    "html": "auto/index.html"
+  }
+}
