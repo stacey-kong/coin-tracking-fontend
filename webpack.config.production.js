@@ -13,13 +13,22 @@ module.exports = (env, argv) => {
   const envPath = env.ENVIRONMENT ? `.env.${env.ENVIRONMENT}` : ".env";
   return {
     mode: "production",
-    entry: ["babel-polyfill", "./src/index.tsx"],
+    entry: {
+      index: {
+        import: "./src/index.tsx",
+        dependOn: "shared",
+      },
+      another: {
+        import: "./src/another-module.js",
+        dependOn: "shared",
+      },
+      shared: "lodash",
+    },
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "[name].bundle.js",
-      clean: true,
-      //   chunkFilename: '[id].chunk.js',
-      //   publicPath: './dist'
+      // chunkFilename: "[name].bundle.js",
+      // clean: true,
     },
 
     resolve: {
@@ -109,13 +118,14 @@ module.exports = (env, argv) => {
       runtimeChunk: "single",
 
       splitChunks: {
-        cacheGroups: {
-          commons: {
-            test: /[\\/]node_modules[\\/]/,
-            name: "vendors",
-            chunks: "all",
-          },
-        },
+        chunks: "all",
+        // cacheGroups: {
+        //   commons: {
+        //     test: /[\\/]node_modules[\\/]/,
+        //     name: "vendors",
+        //     chunks: "all",
+        //   },
+        // },
       },
     },
   };
