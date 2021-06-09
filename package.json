@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.tsx",
   "scripts": {
-    "predeploy": "NODE_ENV=production npx tailwindcss build src/tailwind.css -o src/index.css && npm run build",
+    "predeploy": "git checkout main && git push && NODE_ENV=production npx tailwindcss build src/tailwind.css -o src/index.css && npm run build",
     "deploy": "gh-pages -d dist",
     "start": "webpack serve --config ./webpack.config.js --env ENVIRONMENT=dev",
     "test": "webpack --mode production --config ./webpack.config.test.js ",
