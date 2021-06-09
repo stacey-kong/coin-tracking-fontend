@@ -1,6 +1,8 @@
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { Layout2 } from "./components/Layout/Layout";
+import Loading from "./components/LoadingPage/Loading";
+
 
 // redux
 import { useSelector, useDispatch } from "react-redux";
@@ -11,7 +13,6 @@ import { alertActions } from "./redux/Alert/alert.action";
 //lazy import component to improve code spilting
 const PrivateRoute = lazy(() => import("./components/PrivateRoute/PrivateRoute"));
 const Snackbar = lazy(() => import("./components/Snackbar/SnackBar"));
-const Loading = lazy(() => import("./components/LoadingPage/Loading"));
 const CoinDetails = lazy(() => import("./pages/Coindetails"));
 const Wallet = lazy(() => import("./pages/Wallet"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));

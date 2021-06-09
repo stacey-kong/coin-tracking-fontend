@@ -1,4 +1,3 @@
-
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import socket from "../socket.io";
@@ -8,7 +7,6 @@ import { CoinStatsProps } from "../components/Form/AddCoinForm";
 import { loadingActions } from "../redux/Loading/loading.action";
 import Table from "../utils/Table/DashBoardTable";
 import Button from "../utils/Button/Button";
-
 
 const FilterForm = lazy(() => import("../components/Form/FilterForm"));
 const AddCoinForm = lazy(() => import("../components/Form/AddCoinForm"));
@@ -141,29 +139,29 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <Suspense fallback={<Loading />}>
-      <div className="w-full h-full">
-        <div className="h-5/6">
-          <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
-        </div>
-        <AddCoinForm
-          show={addCoinFormState}
-          onSave={addCoin}
-          onClose={closeFrom}
-        ></AddCoinForm>
-        <FilterForm
-          show={filterFormState}
-          onSave={addScription}
-          onClose={closeFrom}
-        />
-        <div className="self-end h-1/6">
-          <ToolsBar>
-            <Button text="Filter" onclick={() => showHideForm("filter")} />
-            <Button text="Add" onclick={() => showHideForm("add")} />
-          </ToolsBar>
-        </div>
+    <div className="w-full h-full">
+      <div className="h-5/6">
+        <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
       </div>
+
+      <AddCoinForm
+        show={addCoinFormState}
+        onSave={addCoin}
+        onClose={closeFrom}
+      ></AddCoinForm>
+      <FilterForm
+        show={filterFormState}
+        onSave={addScription}
+        onClose={closeFrom}
+      />
+      <div className="self-end h-1/6">
+        <ToolsBar>
+          <Button text="Filter" onclick={() => showHideForm("filter")} />
+          <Button text="Add" onclick={() => showHideForm("add")} />
+        </ToolsBar>
+      </div>
+
       <Popup data={popupState} onClose={closePopup} />
-    </Suspense>
+    </div>
   );
 }
