@@ -1,7 +1,9 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import socket from "../socket.io";
-import Loading from "../components/LoadingPage/Loading";
+import subscriptionService, {
+  subscriptioAction,
+} from "../service/subscriptionService";
 import Popup, { PopupData } from "../components/Popup/Popup";
 import { CoinStatsProps } from "../components/Form/AddCoinForm";
 import { loadingActions } from "../redux/Loading/loading.action";
@@ -33,6 +35,9 @@ export default function Dashboard() {
   const [addCoinFormState, setAddCoinFormState] = useState<boolean>(false);
   const [coinPriceList, setCoinPriceList] =
     useState<CoinPriceList[] | null>(null);
+  const [coinList, setCoinList] = useState<CoinList[] | null>(null);
+  const [customList, setCustomList] = useState<CoinPriceList[] | null>(null);
+  const [custom, setCustom] = useState<boolean>(false);
   const subscriptionPayload = localStorage.getItem("id");
   const headers = ["coin", "price"];
   const [popupState, setPopupState] = useState<PopupData>({
@@ -68,16 +73,61 @@ export default function Dashboard() {
     }
   };
 
+  const getsubscription = () => {
+    console.log("fire");
+    const data = {
+      type: subscriptioAction.QUERY,
+      userId: subscriptionPayload ?? "",
+    };
+
+    subscriptionService(data).then((res) => {
+      console.log(res.message.data.coin);
+      setCoinList(res.message.data.coin);
+    });
+  };
+
   // add or delete coin on tracking board
   const addScription = (Coin: string) => {
     dispatch(loadingActions.loading());
-    socket.emit("addScription", subscriptionPayload, Coin);
+    const data = {
+      type: subscriptioAction.ADD,
+      coin: Coin,
+      userId: subscriptionPayload ?? "",
+    };
+    subscriptionService(data).then((res) => {
+      dispatch(loadingActions.complete());
+      if (!res.error) {
+        setPopupState({
+          open: true,
+          icon: "success",
+          title: "Subscribed",
+          message: res.message.message,
+          button: "OK",
+        });
+      } else {
+        setPopupState({
+          open: true,
+          icon: "error",
+          title: "Something went wrong",
+          message: res.message.message,
+          button: "OK",
+        });
+      }
+    });
     showHideForm("filter");
   };
 
   const deleteCoin = (Coin: string) => {
     dispatch(loadingActions.loading());
-    socket.emit("deleteScription", subscriptionPayload, Coin);
+    const data = {
+      type: subscriptioAction.DELETE,
+      coin: Coin,
+      userId: subscriptionPayload ?? "",
+    };
+    subscriptionService(data).then((res) => {
+      // setCoinList(res.message.data.subscription.subscription)
+      dispatch(loadingActions.complete());
+    });
   };
 
   //add Coin on database
@@ -105,10 +155,6 @@ export default function Dashboard() {
     showHideForm("add");
   };
 
-  // const tableStyle = {
-  //   height: "85%",
-  // };
-
   const closePopup = () => {
     setPopupState((prevState) => ({
       ...prevState,
@@ -117,31 +163,51 @@ export default function Dashboard() {
     window.location.reload();
   };
 
-  // get subscibed coin price on dashboard
   useEffect(() => {
-    socket.open();
-    dispatch(loadingActions.loading());
-    socket.emit("averageprice", `${subscriptionPayload}`);
-    return () => {
-      socket.close();
-    };
-  }, []);
+    getsubscription();
+  }, [subscriptionPayload]);
 
   useEffect(() => {
-    socket.on("allPrice", (res: CoinPriceList[]) => {
+    if (coinList && coinPriceList) {
+      let coin = coinList.map((coinList) => {
+        if (coinList.subscribed) {
+          return coinList.symbol;
+        }
+      });
+      let customList = coinPriceList.filter((coinPriceList) => {
+        if (coin.includes(coinPriceList.abbreviation)) {
+          return coinPriceList;
+        }
+      });
+      setCustomList(customList);
+    }
+  }, [coinList,coinPriceList]);
+
+  useEffect(() => {
+    dispatch(loadingActions.loading());
+    socket.open();
+    socket.on("price", (res: CoinPriceList[]) => {
       setCoinPriceList(res);
+    });
+    socket.on("firstloaded", (res: CoinPriceList[]) => {
       dispatch(loadingActions.complete());
     });
     // CLEAN UP THE EFFECT
     return () => {
-      socket.off("allPrice");
+      socket.off("price");
+      socket.close();
     };
   }, []);
 
   return (
     <div className="w-full h-full">
+      <div className="h-2 w-2 z-10 float-right mx-10" onClick={() => setCustom((prevState) => !prevState)}>*</div>
       <div className="h-5/6">
-        <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
+        {custom ? (
+          <Table headers={headers} rows={customList!} delete={deleteCoin} />
+        ) : (
+          <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
+        )}
       </div>
 
       <AddCoinForm
@@ -149,11 +215,15 @@ export default function Dashboard() {
         onSave={addCoin}
         onClose={closeFrom}
       ></AddCoinForm>
-      <FilterForm
-        show={filterFormState}
-        onSave={addScription}
-        onClose={closeFrom}
-      />
+      {filterFormState && (
+        <FilterForm
+          show={filterFormState}
+          onSave={addScription}
+          onClose={closeFrom}
+          data={coinList!}
+        />
+      )}
+
       <div className="self-end h-1/6">
         <ToolsBar>
           <Button text="Filter" onclick={() => showHideForm("filter")} />
