@@ -19,7 +19,7 @@ export default function Navbar() {
     <>
       {/* navbar wrapper */}
       <div className="w-full h-full flex justify-between bg-blue-300 md:h-20 items-center relative flex-1">
-        <img src={logo} alt="doglogo" className="h-10 m-auto mx-0 " />
+        <img src={logo} alt="doglogo" className="h-10 m-auto mx-0 " width="50"/>
         <h2 className="text-indigo-700 font-black text-lg md:text-3xl absolute inset-x-1/4 text-center w-1/2">
           Check Your Coins!
         </h2>

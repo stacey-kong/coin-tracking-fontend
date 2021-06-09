@@ -7,7 +7,7 @@ import { alertActions } from "../redux/Alert/alert.action";
 import { userActions } from "../redux/User/user.action";
 import { Credentials, userService } from "../service/userService";
 
-export function Login() {
+export default function Login() {
   const [username, setUserName] = useState<string>();
   const [password, setPassword] = useState<string>();
   const dispatch = useDispatch();

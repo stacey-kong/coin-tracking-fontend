@@ -1,13 +1,18 @@
-import Table from "../utils/Table/DashBoardTable";
-import ToolsBar from "../components/ToolsBar/ToolsBar";
-import AddCoinForm, { CoinStatsProps } from "../components/Form/AddCoinForm";
-import FilterForm from "../components/Form/FilterForm";
-import Button from "../utils/Button/Button";
-import { useState, useEffect, useRef } from "react";
-import socket from "../socket.io";
-import Popup, { PopupData } from "../components/Popup/Popup";
+
+import { useState, useEffect, lazy, Suspense } from "react";
 import { useDispatch } from "react-redux";
+import socket from "../socket.io";
+import Loading from "../components/LoadingPage/Loading";
+import Popup, { PopupData } from "../components/Popup/Popup";
+import { CoinStatsProps } from "../components/Form/AddCoinForm";
 import { loadingActions } from "../redux/Loading/loading.action";
+import Table from "../utils/Table/DashBoardTable";
+import Button from "../utils/Button/Button";
+
+
+const FilterForm = lazy(() => import("../components/Form/FilterForm"));
+const AddCoinForm = lazy(() => import("../components/Form/AddCoinForm"));
+const ToolsBar = lazy(() => import("../components/ToolsBar/ToolsBar"));
 
 export interface CoinPriceList {
   name: string;
@@ -39,7 +44,7 @@ export default function Dashboard() {
     message: "",
     button: "",
   });
-  const dispatch =useDispatch()
+  const dispatch = useDispatch();
 
   const showHideForm = (form: string) => {
     switch (form) {
@@ -67,13 +72,13 @@ export default function Dashboard() {
 
   // add or delete coin on tracking board
   const addScription = (Coin: string) => {
-    dispatch(loadingActions.loading())
+    dispatch(loadingActions.loading());
     socket.emit("addScription", subscriptionPayload, Coin);
     showHideForm("filter");
   };
 
   const deleteCoin = (Coin: string) => {
-    dispatch(loadingActions.loading())
+    dispatch(loadingActions.loading());
     socket.emit("deleteScription", subscriptionPayload, Coin);
   };
 
@@ -117,7 +122,7 @@ export default function Dashboard() {
   // get subscibed coin price on dashboard
   useEffect(() => {
     socket.open();
-    dispatch(loadingActions.loading())
+    dispatch(loadingActions.loading());
     socket.emit("averageprice", `${subscriptionPayload}`);
     return () => {
       socket.close();
@@ -127,7 +132,7 @@ export default function Dashboard() {
   useEffect(() => {
     socket.on("allPrice", (res: CoinPriceList[]) => {
       setCoinPriceList(res);
-      dispatch(loadingActions.complete())
+      dispatch(loadingActions.complete());
     });
     // CLEAN UP THE EFFECT
     return () => {
@@ -136,7 +141,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <div className="w-full h-full">
         <div className="h-5/6">
           <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
@@ -159,6 +164,6 @@ export default function Dashboard() {
         </div>
       </div>
       <Popup data={popupState} onClose={closePopup} />
-    </>
+    </Suspense>
   );
 }
