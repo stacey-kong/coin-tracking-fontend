@@ -7,7 +7,7 @@ const AssetsPlugin = require("assets-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = (env, argv) => {
   const envPath = env.ENVIRONMENT ? `.env.${env.ENVIRONMENT}` : ".env";
@@ -27,7 +27,7 @@ module.exports = (env, argv) => {
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "[name].bundle.js",
-      // chunkFilename: "[name].bundle.js",
+      chunkFilename: "[name].bundle.js",
       // clean: true,
     },
 
@@ -79,6 +79,7 @@ module.exports = (env, argv) => {
         filename: "assets.json",
         path: path.resolve(__dirname, "dist"),
       }),
+      new CleanWebpackPlugin(),
     ],
     optimization: {
       chunkIds: "size",
@@ -119,13 +120,6 @@ module.exports = (env, argv) => {
 
       splitChunks: {
         chunks: "all",
-        // cacheGroups: {
-        //   commons: {
-        //     test: /[\\/]node_modules[\\/]/,
-        //     name: "vendors",
-        //     chunks: "all",
-        //   },
-        // },
       },
     },
   };
