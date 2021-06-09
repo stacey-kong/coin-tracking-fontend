@@ -1,19 +1,22 @@
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
-import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import { lazy, Suspense } from "react";
-import Register from "./pages/Register";
-import CoinDetails from "./pages/Coindetails";
-import Snackbar from "./components/Snackbar/SnackBar";
 import { Layout2 } from "./components/Layout/Layout";
 
 // redux
 import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "./redux/rootReducer";
 import { alertActions } from "./redux/Alert/alert.action";
-import Loading from "./components/LoadingPage/Loading";
+
+
+//lazy import component to improve code spilting
+const PrivateRoute = lazy(() => import("./components/PrivateRoute/PrivateRoute"));
+const Snackbar = lazy(() => import("./components/Snackbar/SnackBar"));
+const Loading = lazy(() => import("./components/LoadingPage/Loading"));
+const CoinDetails = lazy(() => import("./pages/Coindetails"));
 const Wallet = lazy(() => import("./pages/Wallet"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
 
 export default function App() {
   const dispatch = useDispatch();

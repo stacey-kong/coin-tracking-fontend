@@ -1,7 +1,6 @@
 import { useHistory, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import socket from "../socket.io";
-import { Layout2 } from "../components/Layout/Layout";
 import Table from "../utils/Table/CoinDetailTable";
 
 export interface CoinPrice {

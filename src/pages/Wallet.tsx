@@ -1,14 +1,16 @@
-import { Layout2 } from "../components/Layout/Layout";
-import { useState, useEffect, useRef } from "react";
-import { useHistory } from "react-router";
+import { useState, useEffect, lazy } from "react";
+import { useHistory, } from "react-router";
 import { CoinList } from "./Dashboard";
-import socket from "../socket.io";
-import SelectionList, {
-  coinSelection,
-} from "../components/SelectMenus/SelectionList";
-import LineChart from "../components/Charts/LineChart";
 import { useDispatch } from "react-redux";
+import socket from "../socket.io";
+import { coinSelection } from "../components/SelectMenus/SelectionList";
 import { loadingActions } from "../redux/Loading/loading.action";
+
+const SelectionList = lazy(
+  () => import("../components/SelectMenus/SelectionList")
+);
+const LineChart = lazy(() => import("../components/Charts/LineChart"));
+
 interface lendingInterest {
   today: number;
   week: number;
@@ -110,7 +112,7 @@ export default function Wallet() {
       setAmount(res[1]);
       dispatch(loadingActions.complete());
     });
-  
+
     // CLEAN UP THE EFFECT
     return () => {
       socket.off("lendingInterest");
