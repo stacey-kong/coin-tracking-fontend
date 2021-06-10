@@ -16,10 +16,9 @@ const currency = ["USD", "USDT", "BTC"];
 
 export default function Form(props: FormProps) {
   const showHideClassName = props.show ? "flex" : "hidden";
-  // const [coinList, setCoinList] = useState<CoinList[]>([]);
   const [selectedcurrency, setSelectedCurrency] = useState<string>("USD");
   const [addedSelection, setAddedSelection] = useState<string | null>("");
-  // const subscriptionPayload = localStorage.getItem("id");
+
 
   const coinSelection = {
     type: "coinList",
@@ -29,12 +28,6 @@ export default function Form(props: FormProps) {
     type: "default",
     children: currency,
   };
-  // const openSelection = () => {
-  //   socket.emit("getCoinList", `${subscriptionPayload}`);
-  //   socket.on("coinList", (res: CoinList[]) => {
-  //     setCoinList(res);
-  //   });
-  // };
 
   const onSelected = (selection: string) => {
     setAddedSelection(selection);
@@ -80,7 +73,6 @@ export default function Form(props: FormProps) {
             placeHolder="Coin"
             value={addedSelection ? addedSelection : ""}
             selectAction={onSelected}
-            // onclick={openSelection}
           />
 
           <SelectionList

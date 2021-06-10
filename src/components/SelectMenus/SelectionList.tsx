@@ -17,7 +17,6 @@ interface SelectionMenuProps {
   value: string;
   placeHolder?: string;
   element: coinSelection | defaultSelection;
-  onclick?: () => void;
   selectAction?: (selection: string) => void;
 }
 
@@ -30,10 +29,7 @@ export default function Selection(props: SelectionMenuProps) {
       selectAction(selection);
     }
   };
-  function openselection() {
-    props.onclick && props.onclick();
-    setIsOpen(!isOpen);
-  }
+
   return (
     <div className="w-full">
       <label
@@ -49,11 +45,11 @@ export default function Selection(props: SelectionMenuProps) {
           aria-haspopup="listbox"
           aria-expanded="true"
           aria-labelledby="listbox-label"
-          onClick={openselection}
+          onClick={() => setIsOpen((prevState)=>!prevState)}
         >
           <span className="flex items-center">
             <span className="ml-3 block truncate">
-              {props.value ? props.value :props.placeHolder}
+              {props.value ? props.value : props.placeHolder}
             </span>
           </span>
           <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">

@@ -48,7 +48,7 @@ export default function table(props: TableProps) {
               return (
                 <th
                   scope="col"
-                  className={`px-6 py-3  text-left text-xs font-medium bg-gray-50 text-gray-500 uppercase tracking-wider sticky top-0`}
+                  className={`px-6 py-3 text-left text-xs font-medium bg-gray-50 text-gray-500 uppercase tracking-wider sticky top-0`}
                   key={index}
                 >
                   {header}
@@ -57,7 +57,7 @@ export default function table(props: TableProps) {
             })}
             <th
               scope="col"
-              className="px-6 py-3 text-xs font-medium  w-1/4 uppercase tracking-wider sticky top-0"
+              className="px-6 py-3 text-xs font-medium bg-gray-50 w-1/4 uppercase tracking-wider sticky top-0"
               key={"customButton"}
               onClick={() => props.filter()}
             >
