@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect, lazy } from "react";
 import { useDispatch } from "react-redux";
 import socket from "../socket.io";
 import subscriptionService, {
@@ -182,9 +182,10 @@ export default function Dashboard() {
       });
       setCustomList(customList);
     }
-  }, [coinList, coinPriceList]);
+  }, [coinList]);
 
   useEffect(() => {
+    // console.log("price reload")
     dispatch(loadingActions.loading());
     socket.open();
     socket.on("price", (res: CoinPriceList[]) => {
@@ -200,7 +201,7 @@ export default function Dashboard() {
       socket.close();
     };
   }, []);
-
+  // console.log("dashborard reload")
   return (
     <div className="w-full h-full">
       <div className="h-5/6">
