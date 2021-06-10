@@ -15,7 +15,7 @@ module.exports = (env, argv) => {
     mode: "production",
     entry: {
       index: {
-        import: "./src/index.tsx",
+        import: ["babel-polyfill", "./src/index.tsx"],
         dependOn: "shared",
       },
       another: {
@@ -27,7 +27,7 @@ module.exports = (env, argv) => {
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "[name].bundle.js",
-      chunkFilename: '[name].bundle.js',
+      chunkFilename: "[name].bundle.js",
       clean: true,
       //   chunkFilename: '[id].chunk.js',
       //   publicPath: './dist'
