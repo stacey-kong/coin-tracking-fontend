@@ -1,4 +1,5 @@
-import logo from "../../dog.svg";
+import logo from "../../Icons/dog.svg";
+
 import "./Loading.scss";
 
 export default function (){

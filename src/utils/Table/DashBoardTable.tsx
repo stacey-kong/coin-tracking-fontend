@@ -1,9 +1,14 @@
 import { CoinPriceList } from "../../pages/Dashboard";
 import { Link } from "react-router-dom";
+import star from "../../Icons/star.svg";
+import star_active from "../../Icons/star_active.svg";
+
 interface TableProps {
   headers: string[];
   rows: CoinPriceList[];
-  delete: (coin: string) => void;
+  delete?: (coin: string) => void;
+  filter: () => void;
+  custom: boolean;
 }
 
 const yesButton = (
@@ -43,7 +48,7 @@ export default function table(props: TableProps) {
               return (
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium bg-gray-50 text-gray-500 uppercase tracking-wider sticky top-0"
+                  className={`px-6 py-3  text-left text-xs font-medium bg-gray-50 text-gray-500 uppercase tracking-wider sticky top-0`}
                   key={index}
                 >
                   {header}
@@ -52,9 +57,26 @@ export default function table(props: TableProps) {
             })}
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium bg-gray-50 text-gray-500 uppercase tracking-wider sticky top-0"
-              key={"deleteButton"}
-            ></th>
+              className="px-6 py-3 text-xs font-medium  w-1/4 uppercase tracking-wider sticky top-0"
+              key={"customButton"}
+              onClick={() => props.filter()}
+            >
+              {props.custom ? (
+                <img
+                  src={star_active}
+                  alt="filterbySubscription"
+                  className="h-6 m-auto "
+                  width="20"
+                />
+              ) : (
+                <img
+                  src={star}
+                  alt="unfilterbySubscription"
+                  className="h-6 m-auto  "
+                  width="20"
+                />
+              )}
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -62,14 +84,21 @@ export default function table(props: TableProps) {
             return (
               <tr key={index}>
                 {renderList(row)}
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <a
-                    href="#"
-                    className="text-indigo-600 hover:text-indigo-900"
-                    onClick={() => props.delete(row.abbreviation)}
-                  >
-                    delete
-                  </a>
+                <td className="px-6 py-4 w-1/4 whitespace-nowrap text-center text-sm font-medium">
+                  {props.custom ? (
+                    <a
+                      href="#"
+                      className="text-indigo-600 hover:text-indigo-900"
+                      onClick={() => props.delete(row.abbreviation)}
+                    >
+                      delete
+                    </a>
+                  ) : (
+                    <a
+                      href="#"
+                      className="text-indigo-600 hover:text-indigo-900"
+                    ></a>
+                  )}
                 </td>
               </tr>
             );

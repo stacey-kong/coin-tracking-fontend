@@ -81,7 +81,6 @@ export default function Dashboard() {
     };
 
     subscriptionService(data).then((res) => {
-      console.log(res.message.data.coin);
       setCoinList(res.message.data.coin);
     });
   };
@@ -96,6 +95,7 @@ export default function Dashboard() {
     };
     subscriptionService(data).then((res) => {
       dispatch(loadingActions.complete());
+      setCoinList(res.message.data.coin);
       if (!res.error) {
         setPopupState({
           open: true,
@@ -114,6 +114,7 @@ export default function Dashboard() {
         });
       }
     });
+
     showHideForm("filter");
   };
 
@@ -125,7 +126,7 @@ export default function Dashboard() {
       userId: subscriptionPayload ?? "",
     };
     subscriptionService(data).then((res) => {
-      // setCoinList(res.message.data.subscription.subscription)
+      setCoinList(res.message.data.coin);
       dispatch(loadingActions.complete());
     });
   };
@@ -181,7 +182,7 @@ export default function Dashboard() {
       });
       setCustomList(customList);
     }
-  }, [coinList,coinPriceList]);
+  }, [coinList, coinPriceList]);
 
   useEffect(() => {
     dispatch(loadingActions.loading());
@@ -190,6 +191,7 @@ export default function Dashboard() {
       setCoinPriceList(res);
     });
     socket.on("firstloaded", (res: CoinPriceList[]) => {
+      setCoinPriceList(res);
       dispatch(loadingActions.complete());
     });
     // CLEAN UP THE EFFECT
@@ -201,12 +203,22 @@ export default function Dashboard() {
 
   return (
     <div className="w-full h-full">
-      <div className="h-2 w-2 z-10 float-right mx-10" onClick={() => setCustom((prevState) => !prevState)}>*</div>
       <div className="h-5/6">
         {custom ? (
-          <Table headers={headers} rows={customList!} delete={deleteCoin} />
+          <Table
+            headers={headers}
+            rows={customList!}
+            delete={deleteCoin}
+            filter={() => setCustom((prevState) => !prevState)}
+            custom={custom}
+          />
         ) : (
-          <Table headers={headers} rows={coinPriceList!} delete={deleteCoin} />
+          <Table
+            headers={headers}
+            rows={coinPriceList!}
+            filter={() => setCustom((prevState) => !prevState)}
+            custom={custom}
+          />
         )}
       </div>
 

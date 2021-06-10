@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
-import logo from "../../dog.svg";
+import logo from "../../Icons/dog.svg";
 
 export default function Navbar() {
   const navigation = ["Coin", "Wallet", "function1", "function2"];
@@ -19,7 +19,12 @@ export default function Navbar() {
     <>
       {/* navbar wrapper */}
       <div className="w-full h-full flex justify-between bg-blue-300 md:h-20 items-center relative flex-1">
-        <img src={logo} alt="doglogo" className="h-10 m-auto mx-0 " width="50"/>
+        <img
+          src={logo}
+          alt="doglogo"
+          className="h-10 m-auto mx-0 "
+          width="50"
+        />
         <h2 className="text-indigo-700 font-black text-lg md:text-3xl absolute inset-x-1/4 text-center w-1/2">
           Check Your Coins!
         </h2>
@@ -70,17 +75,13 @@ export default function Navbar() {
       </div>
       {/* navmenu on mobile site */}
       <div
-        className={`${
-          open ? "block" : "hidden"
-        } w-full z-40`}
+        className={`${open ? "block" : "hidden"} w-full z-40`}
         onClick={(e) => {
           e.stopPropagation();
           setopen(false);
         }}
       >
-        <div
-          className="px-2 pt-2 pb-3 space-y-1 sm:px-3 w-full bg-blue-300"
-        >
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 w-full bg-blue-300">
           {navigation.map((item, itemIdx) => (
             <Link
               to={`${item === "Coin" ? "/" : item.toLowerCase()}`}
@@ -95,7 +96,7 @@ export default function Navbar() {
                 } px-3 py-2 w-full rounded-md text-sm font-medium`}
                 onClick={() => {
                   setActiveTab(itemIdx);
-                  setopen(false)
+                  setopen(false);
                 }}
               >
                 {item}
