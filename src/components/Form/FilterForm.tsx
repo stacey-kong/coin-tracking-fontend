@@ -1,5 +1,7 @@
 import { CoinList } from "../../pages/Dashboard";
 import React, { useState } from "react";
+import { alertActions } from "../../redux/Alert/alert.action";
+import { useDispatch } from "react-redux";
 
 interface FormProps {
   show: boolean;
@@ -23,12 +25,20 @@ function Form(props: FormProps) {
   const [coinSelectionOpen, setcoinSelectionOpen] = useState<boolean>(false);
   const [currencySelectionOpen, setcurrencySelectionOpen] =
     useState<boolean>(false);
-
-  const onSelected = (selection: string) => {
-    setAddedSelection(selection);
+  const dispatch = useDispatch();
+  const onSelected = (selection: CoinList) => {
+    setcoinSelectionOpen((prev) => !prev);
+    if (selection.subscribed) {
+      dispatch(
+        alertActions.warning(
+          `${selection.symbol} is already on the subscription`
+        )
+      );
+    } else setAddedSelection(selection.symbol);
   };
 
   const handleCurrencySelectionChange = (selection: string) => {
+    setcurrencySelectionOpen((prev) => !prev);
     setSelectedCurrency(selection);
   };
 
@@ -116,7 +126,7 @@ function Form(props: FormProps) {
                       key={Math.random()}
                       id={`listbox-option-${index}`}
                       role="option"
-                      onClick={() => onSelected(selection.symbol)}
+                      onClick={() => onSelected(selection)}
                     >
                       <div className="flex items-center">
                         <span className="font-normal ml-3 block truncate">

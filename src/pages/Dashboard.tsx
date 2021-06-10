@@ -74,7 +74,7 @@ export default function Dashboard() {
   };
 
   const getsubscription = () => {
-    console.log("fire");
+
     const data = {
       type: subscriptioAction.QUERY,
       userId: subscriptionPayload ?? "",
@@ -165,10 +165,6 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    getsubscription();
-  }, [subscriptionPayload]);
-
-  useEffect(() => {
     if (coinList && coinPriceList) {
       let coin = coinList.map((coinList) => {
         if (coinList.subscribed) {
@@ -193,6 +189,7 @@ export default function Dashboard() {
     });
     socket.on("firstloaded", (res: CoinPriceList[]) => {
       setCoinPriceList(res);
+      getsubscription();
       dispatch(loadingActions.complete());
     });
     // CLEAN UP THE EFFECT

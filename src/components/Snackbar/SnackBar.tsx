@@ -30,7 +30,7 @@ function renderSnackbar(props: snackbarContentProps) {
 
   return (
     <div
-      className={`absolute bottom-2 left-1 w-1/2 p-5 inline-flex text-white rounded text-lg font-semibold ${color}`}
+      className={`absolute bottom-2 left-1 w-1/2 z-10 p-5 inline-flex text-white rounded text-lg font-semibold ${color}`}
     >
       <p>{props.message}</p>
       <span className="absolute right-2">
