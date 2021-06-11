@@ -37,7 +37,7 @@ export default function App() {
             <Register />
           </Route>
           <Layout2>
-            <PrivateRoute path="/coin/:coinname" component={CoinDetails} />
+            {/* <PrivateRoute path="/coin/:coinname" component={CoinDetails} /> */}
             <PrivateRoute path="/wallet" component={Wallet} />
             <PrivateRoute exact path="/" component={Dashboard} />
           </Layout2>

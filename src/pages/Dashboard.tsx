@@ -1,6 +1,6 @@
 import { useState, useEffect, lazy } from "react";
 import { useDispatch } from "react-redux";
-import socket from "../socket.io";
+import Socket from "../socket.io";
 import subscriptionService, {
   subscriptioAction,
 } from "../service/subscriptionService";
@@ -9,6 +9,7 @@ import { CoinStatsProps } from "../components/Form/AddCoinForm";
 import { loadingActions } from "../redux/Loading/loading.action";
 import Table from "../utils/Table/DashBoardTable";
 import Button from "../utils/Button/Button";
+
 
 const FilterForm = lazy(() => import("../components/Form/FilterForm"));
 const AddCoinForm = lazy(() => import("../components/Form/AddCoinForm"));
@@ -29,6 +30,8 @@ interface addCoinRes {
   status: boolean;
   message: string;
 }
+
+const socket= Socket()
 
 export default function Dashboard() {
   const [filterFormState, setfilterFormState] = useState<boolean>(false);

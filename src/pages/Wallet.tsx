@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router";
 import { CoinList } from "./Dashboard";
-import socket from "../socket.io";
 import LineChart from "../components/Charts/LineChart";
 import { useDispatch } from "react-redux";
 import { loadingActions } from "../redux/Loading/loading.action";
@@ -48,7 +47,7 @@ export default function Wallet() {
 
   const reviseAmount = () => {
     dispatch(loadingActions.loading());
-    socket.emit("reviseLending", subscriptionPayload, amount);
+
     setQueryLocaltime(false);
   };
 
@@ -57,7 +56,6 @@ export default function Wallet() {
     const noInweek = now.getDay();
     const monWeek = now.setHours(0, 0, 0, 0) - (noInweek - 1) * oneDay;
     dispatch(loadingActions.loading());
-    socket.emit("dailyLending", subscriptionPayload, monWeek);
     setActiveTab(1);
     setTimestamp(monWeek);
   };
@@ -65,21 +63,21 @@ export default function Wallet() {
   const WeekReport = (type: String) => {
     switch (type) {
       case "prev":
-        socket.emit(
-          "dailyLending",
-          subscriptionPayload,
-          timestamp - 7 * oneDay,
-          7
-        );
+        // socket.emit(
+        //   "dailyLending",
+        //   subscriptionPayload,
+        //   timestamp - 7 * oneDay,
+        //   7
+        // );
         setTimestamp((prev) => prev - 7 * oneDay);
         break;
-      case "next":
-        socket.emit(
-          "dailyLending",
-          subscriptionPayload,
-          timestamp + 7 * oneDay,
-          7
-        );
+        // case "next":
+        //   socket.emit(
+        //     "dailyLending",
+        //     subscriptionPayload,
+        //     timestamp + 7 * oneDay,
+        //     7
+        //   );
         setTimestamp((prev) => prev + 7 * oneDay);
         break;
     }
