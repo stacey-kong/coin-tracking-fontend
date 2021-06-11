@@ -1,1 +1,1 @@
-(self.webpackChunkMy_Project=self.webpackChunkMy_Project||[]).push([[17],{463:(e,l,u)=>{"use strict";u.r(l),u.d(l,{default:()=>function(e){return(0,r.jsx)("div",{className:"w-full h-full flex justify-around items-center bg-blue-400 mb-0",children:e.children})}});var r=u(3)}}]);
+(self.webpackChunkMy_Project=self.webpackChunkMy_Project||[]).push([[17],{462:(e,l,u)=>{"use strict";u.r(l),u.d(l,{default:()=>function(e){return(0,r.jsx)("div",{className:"w-full h-full flex justify-around items-center bg-blue-400 mb-0",children:e.children})}});var r=u(3)}}]);
