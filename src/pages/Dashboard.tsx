@@ -178,7 +178,7 @@ export default function Dashboard() {
       });
       setCustomList(customList);
     }
-  }, [coinList]);
+  }, [coinList,coinPriceList]);
 
   useEffect(() => {
     // console.log("price reload")
