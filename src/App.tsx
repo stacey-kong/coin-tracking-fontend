@@ -38,7 +38,7 @@ export default function App() {
           </Route>
           <Layout2>
             <PrivateRoute path="/coin/:coinname" component={CoinDetails} />
-            {/* <PrivateRoute path="/wallet" component={Wallet} /> */}
+            <PrivateRoute path="/wallet" component={Wallet} />
             <PrivateRoute exact path="/" component={Dashboard} />
           </Layout2>
           <Redirect from="*" to="/" />
