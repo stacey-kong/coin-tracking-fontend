@@ -1,6 +1,6 @@
 export enum lendingAction {
   QUERY = "QUERY",
-  MODIFY = "MOdify",
+  MODIFY = "MODIFY",
 }
 
 export enum Timezone {

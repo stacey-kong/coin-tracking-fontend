@@ -1,7 +1,9 @@
 import { useHistory, useParams } from "react-router";
 import { useEffect, useState } from "react";
-import socket from "../socket.io";
 import Table from "../utils/Table/CoinDetailTable";
+import coinService, { coinAction } from "../service/coinService";
+import { useDispatch } from "react-redux";
+import { loadingActions } from "../redux/Loading/loading.action";
 
 export interface CoinPrice {
   exchange: string;
@@ -12,23 +14,18 @@ export default function CoinDetails() {
   const headers = ["exchange", "price"];
   const { coinname } = useParams<{ coinname: string }>();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    socket.open();
-    socket.emit("coinprice", `${coinname}`);
-    return () => {
-      socket.close();
+    dispatch(loadingActions.loading());
+    let data = {
+      coin: coinname,
+      type: coinAction.QUERY,
     };
-  }, []);
-
-  useEffect(() => {
-    socket.on(`${coinname}`, (res: CoinPrice[]) => {
-      setCoinPrice(res);
+    coinService(data).then((data) => {
+      setCoinPrice(data.price);
+      dispatch(loadingActions.complete());
     });
-    // CLEAN UP THE EFFECT
-    return () => {
-      socket.off(`${coinname}`);
-    };
   }, []);
 
   return (
@@ -46,6 +43,6 @@ export default function CoinDetails() {
           Back to Home
         </span>
       </div>
-     </>
+    </>
   );
 }

@@ -10,7 +10,6 @@ import { loadingActions } from "../redux/Loading/loading.action";
 import Table from "../utils/Table/DashBoardTable";
 import Button from "../utils/Button/Button";
 
-
 const FilterForm = lazy(() => import("../components/Form/FilterForm"));
 const AddCoinForm = lazy(() => import("../components/Form/AddCoinForm"));
 const ToolsBar = lazy(() => import("../components/ToolsBar/ToolsBar"));
@@ -31,7 +30,7 @@ interface addCoinRes {
   message: string;
 }
 
-const socket= Socket()
+const socket = Socket();
 
 export default function Dashboard() {
   const [filterFormState, setfilterFormState] = useState<boolean>(false);
@@ -77,7 +76,6 @@ export default function Dashboard() {
   };
 
   const getsubscription = () => {
-
     const data = {
       type: subscriptioAction.QUERY,
       userId: subscriptionPayload ?? "",
@@ -181,7 +179,7 @@ export default function Dashboard() {
       });
       setCustomList(customList);
     }
-  }, [coinList,coinPriceList]);
+  }, [coinList, coinPriceList]);
 
   useEffect(() => {
     // console.log("price reload")
@@ -198,10 +196,11 @@ export default function Dashboard() {
     // CLEAN UP THE EFFECT
     return () => {
       socket.off("price");
+      socket.off("firstloaded");
       socket.close();
     };
   }, []);
-  // console.log("dashborard reload")
+
   return (
     <div className="w-full h-full">
       <div className="h-5/6">
