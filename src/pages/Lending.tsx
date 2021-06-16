@@ -285,16 +285,6 @@ export default function Wallet() {
           </div>
         )}
       </div>
-      <div className="w-full flex sticky justify-end z-10 bottom-56">
-        <span
-          className="pl-2 pr-5 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-          onClick={() => {
-            history.push("/");
-          }}
-        >
-          Back to Home
-        </span>
-      </div>
     </div>
   );
 }

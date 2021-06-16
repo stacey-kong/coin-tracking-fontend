@@ -8,6 +8,7 @@ import { useEffect } from "react";
 export default function Navbar() {
   const navigation = ["Coin", "Lending", "Wallet", "function2"];
   const location = useLocation();
+  const history = useHistory();
 
   const [open, setopen] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -29,6 +30,9 @@ export default function Navbar() {
           alt="doglogo"
           className="h-10 m-auto mx-0 "
           width="50"
+          onClick={() => {
+            history.push("/");
+          }}
         />
         <h2 className="text-indigo-700 font-black text-lg md:text-3xl absolute inset-x-1/4 text-center w-1/2">
           Check Your Coins!

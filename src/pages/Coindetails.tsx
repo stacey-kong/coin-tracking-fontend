@@ -33,16 +33,7 @@ export default function CoinDetails() {
       <div className="h-1/2">
         <Table headers={headers} rows={coinPrice!} />
       </div>
-      <div className="w-full flex justify-end mt-10">
-        <span
-          className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-          onClick={() => {
-            history.push("/");
-          }}
-        >
-          Back to Home
-        </span>
-      </div>
+
     </>
   );
 }
