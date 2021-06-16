@@ -14,7 +14,7 @@ import { alertActions } from "./redux/Alert/alert.action";
 const PrivateRoute = lazy(() => import("./components/PrivateRoute/PrivateRoute"));
 const Snackbar = lazy(() => import("./components/Snackbar/SnackBar"));
 const CoinDetails = lazy(() => import("./pages/Coindetails"));
-const Wallet = lazy(() => import("./pages/Wallet"));
+const Lending = lazy(() => import("./pages/Lending"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
@@ -38,7 +38,7 @@ export default function App() {
           </Route>
           <Layout2>
             <PrivateRoute path="/coin/:coinname" component={CoinDetails} />
-            <PrivateRoute path="/wallet" component={Wallet} />
+            <PrivateRoute path="/lending" component={Lending} />
             <PrivateRoute exact path="/" component={Dashboard} />
           </Layout2>
           <Redirect from="*" to="/" />

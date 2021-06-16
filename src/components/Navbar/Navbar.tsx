@@ -3,17 +3,22 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
 import logo from "../../Icons/dog.svg";
+import { useEffect } from "react";
 
 export default function Navbar() {
-  const navigation = ["Coin", "Wallet", "function1", "function2"];
+  const navigation = ["Coin", "Lending", "Wallet", "function2"];
   const location = useLocation();
-  const tabNames =
-    location.pathname.charAt(1).toUpperCase() + location.pathname.slice(2);
-  const initTabs =
-    navigation.indexOf(tabNames) === -1 ? 0 : navigation.indexOf(tabNames);
 
   const [open, setopen] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<number>(initTabs);
+  const [activeTab, setActiveTab] = useState<number>(0);
+
+  useEffect(() => {
+    const tabNames =
+      location.pathname.charAt(1).toUpperCase() + location.pathname.slice(2);
+    const Tabs =
+      navigation.indexOf(tabNames) === -1 ? 0 : navigation.indexOf(tabNames);
+    setActiveTab(Tabs);
+  }, [location]);
 
   return (
     <>
@@ -44,9 +49,9 @@ export default function Navbar() {
                       ? "bg-blue-800  text-white"
                       : "hover:bg-gray-700 hover:text-white"
                   } px-3 py-2 w-full rounded-md text-sm font-medium`}
-                  onClick={() => {
-                    setActiveTab(itemIdx);
-                  }}
+                  // onClick={() => {
+                  //   setActiveTab(itemIdx);
+                  // }}
                 >
                   {item}
                 </div>
