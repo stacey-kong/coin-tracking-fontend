@@ -9,6 +9,7 @@ import { CoinStatsProps } from "../components/Form/AddCoinForm";
 import { loadingActions } from "../redux/Loading/loading.action";
 import Table from "../utils/Table/DashBoardTable";
 import Button from "../utils/Button/Button";
+import coinService, { coinAction } from "../service/coinService";
 
 const FilterForm = lazy(() => import("../components/Form/FilterForm"));
 const AddCoinForm = lazy(() => import("../components/Form/AddCoinForm"));
@@ -134,14 +135,19 @@ export default function Dashboard() {
 
   //add Coin on database
   const addCoin = (props: CoinStatsProps) => {
-    console.log(props);
-    socket.emit("addCoin", props, function (data: addCoinRes) {
-      if (data.status) {
+    const data = {
+      type: coinAction.ADD,
+      name: props.name,
+      coin: props.symbol,
+    };
+    coinService(data).then((res) => {
+      dispatch(loadingActions.complete());
+      if (res.status) {
         setPopupState({
           open: true,
           icon: "success",
           title: "Add coin success",
-          message: data.message,
+          message: res.message,
           button: "OK",
         });
       } else {
@@ -149,7 +155,7 @@ export default function Dashboard() {
           open: true,
           icon: "error",
           title: "Add coin fail",
-          message: data.message,
+          message: res.message,
           button: "OK",
         });
       }
