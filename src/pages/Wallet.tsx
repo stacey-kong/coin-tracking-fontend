@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router";
-import { CoinList } from "./Dashboard";
 import LineChart from "../components/Charts/LineChart";
 import { useDispatch } from "react-redux";
 import { loadingActions } from "../redux/Loading/loading.action";
@@ -8,6 +7,7 @@ import lendingService, {
   lendingAction,
   Timezone,
 } from "../service/lendingService";
+
 interface lendingInterest {
   today: number;
   week: number;
@@ -36,8 +36,10 @@ export default function Wallet() {
   const [queryLocaltime, setQueryLocaltime] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [timestamp, setTimestamp] = useState<number>(0);
+  const [disableNextWeek, setDisableNextWeek] = useState<boolean>(false);
   const subscriptionPayload = localStorage.getItem("id");
   const oneDay = 8.64e7;
+  const now = new Date();
 
   const dispatch = useDispatch();
 
@@ -47,39 +49,61 @@ export default function Wallet() {
 
   const reviseAmount = () => {
     dispatch(loadingActions.loading());
-
+    const data = {
+      userId: subscriptionPayload ?? "",
+      type: lendingAction.MODIFY,
+      amount,
+      coin: addedSelection,
+    };
+    lendingService(data).then((data) => {
+      setAmount(data.amount);
+      setInterest(data.interest);
+      dispatch(loadingActions.complete());
+    });
     setQueryLocaltime(false);
   };
 
-  const onClickSummary = () => {
-    const now = new Date();
-    const noInweek = now.getDay();
-    const monWeek = now.setHours(0, 0, 0, 0) - (noInweek - 1) * oneDay;
-    dispatch(loadingActions.loading());
-    setActiveTab(1);
-    setTimestamp(monWeek);
-  };
+  const getInterestReport = (type: String) => {
+    const data = {
+      userId: subscriptionPayload ?? "",
+      type: lendingAction.REPORT,
+      coin: addedSelection,
+      timestamp: 0,
+    };
 
-  const WeekReport = (type: String) => {
     switch (type) {
       case "prev":
-        // socket.emit(
-        //   "dailyLending",
-        //   subscriptionPayload,
-        //   timestamp - 7 * oneDay,
-        //   7
-        // );
+        data.timestamp = timestamp - 7 * oneDay;
+        lendingService(data).then((data) => {
+          setdailyInterest(data.interest);
+        });
         setTimestamp((prev) => prev - 7 * oneDay);
+        if (disableNextWeek) setDisableNextWeek(false);
         break;
-        // case "next":
-        //   socket.emit(
-        //     "dailyLending",
-        //     subscriptionPayload,
-        //     timestamp + 7 * oneDay,
-        //     7
-        //   );
+      case "next":
+        data.timestamp = timestamp + 7 * oneDay;
+        lendingService(data).then((data) => {
+          setdailyInterest(data.interest);
+        });
         setTimestamp((prev) => prev + 7 * oneDay);
+        if (timestamp + 14 * oneDay > now.getTime()) {
+          setDisableNextWeek(true);
+        }
+
         break;
+      case "now":
+        const nowInweek = now.getDay();
+        const monWeek = now.setHours(0, 0, 0, 0) - (nowInweek - 1) * oneDay;
+        data.timestamp = monWeek;
+        dispatch(loadingActions.loading());
+        setDisableNextWeek(true);
+        lendingService(data).then((data) => {
+          setdailyInterest(data.interest);
+          dispatch(loadingActions.complete());
+        });
+
+        setActiveTab(1);
+        setTimestamp(monWeek);
     }
   };
 
@@ -108,8 +132,8 @@ export default function Wallet() {
     getlending();
   }, [queryLocaltime]);
   return (
-    <div className="pt-2 pb-4 px-4 h-full box-border">
-      <div className="h-1/2">
+    <div className="pt-2 pb-4 px-4 h-full block">
+      <div style={{ height: "32%" }}>
         <div className="mt-1 relative">
           <button
             type="button"
@@ -164,9 +188,9 @@ export default function Wallet() {
             })}
           </ul>
         </div>
-        <div className="h-3/4">
+        <div className="h-1/2">
           <div className="inline-flex my-4 w-full h-1/2">
-            <h3 className="w-1/2 text-2xl">Lending Amount</h3>
+            <h3 className="w-1/2 text-xl">Lending Amount</h3>
             <input
               className="w-1/2 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-xl rounded-md border-none text-right"
               type="text"
@@ -186,20 +210,21 @@ export default function Wallet() {
               />
               Show in Local time
             </label>
-
-            <span
-              className="p-2 bg-blue-300 text-white text-center font-bold text-xl float-right"
-              onClick={reviseAmount}
-            >
-              submit
-            </span>
+            <div className="cursor-pointer">
+              <span
+                className="p-2 bg-blue-300 text-white text-center font-bold text-xl float-right "
+                onClick={reviseAmount}
+              >
+                submit
+              </span>
+            </div>
           </div>
         </div>
       </div>
-      <div className="h-1/2">
+      <div style={{ height: "68%", marginTop: "1rem" }}>
         <div className="inline-flex justify-around w-full">
           <span
-            className={`w-1/4 py-1 rounded-full bg-indigo-600 text-white text-center font-bold text-m ${
+            className={`w-1/4 py-1 rounded-full bg-indigo-600 text-white text-center font-bold text-m cursor-pointer ${
               activeTab === 0 ? "ring-4 ring-indigo-200" : ""
             }`}
             onClick={() => setActiveTab(0)}
@@ -207,16 +232,16 @@ export default function Wallet() {
             Latest
           </span>
           <span
-            className={`w-1/4 py-1 rounded-full bg-indigo-600 text-white text-center font-bold text-m ${
+            className={`w-1/4 py-1 rounded-full bg-indigo-600 text-white text-center font-bold text-m cursor-pointer ${
               activeTab === 1 ? "ring-4 ring-indigo-200" : ""
             }`}
-            onClick={onClickSummary}
+            onClick={() => getInterestReport("now")}
           >
             Sumary
           </span>
         </div>
 
-        <div className="mt-4 px-4 border-2 border-blue-300 h-3/4 justify-items-center items-center">
+        <div className="mt-4 px-4 border-2 border-blue-300 h-2/3 justify-items-center items-center">
           {activeTab === 0 && (
             <table className="text-left mt-2 space-around w-full h-3/4 border-collapse">
               <tbody>
@@ -236,26 +261,29 @@ export default function Wallet() {
             </table>
           )}
           {activeTab === 1 && (
-            <div>
-              <div className="float-right">
-                <span
-                  className="w-1/4 py-1 rounded-full bg-indigo-600 text-white text-center font-bold text-m"
-                  onClick={() => WeekReport("prev")}
-                >
-                  Prev
-                </span>
-                <span
-                  className="w-1/4 py-1 rounded-full bg-indigo-600 text-white text-center font-bold text-m "
-                  onClick={() => WeekReport("next")}
-                >
-                  Next
-                </span>
-              </div>
-
+            <div className="m-auto py-4">
               <LineChart data={dailyInterest!}></LineChart>
             </div>
           )}
         </div>
+        {activeTab === 1 && (
+          <div className="w-full justify-around flex mt-4">
+            <span
+              className="w-1/4 rounded-full bg-indigo-600 text-white text-center font-bold text-m cursor-pointer"
+              onClick={() => getInterestReport("prev")}
+            >
+              Prev
+            </span>
+            <span
+              className={`w-1/4 rounded-full bg-indigo-600 text-white text-center font-bold text-m cursor-pointer ${
+                disableNextWeek ? "hidden" : " "
+              }`}
+              onClick={() => getInterestReport("next")}
+            >
+              Next
+            </span>
+          </div>
+        )}
       </div>
       <div className="w-full flex sticky justify-end z-10 bottom-56">
         <span

@@ -2,8 +2,8 @@ import {
   XYPlot,
   XAxis,
   YAxis,
-  VerticalGridLines,
-  HorizontalGridLines,
+  makeVisFlexible,
+ 
   LineMarkSeries,
 } from "react-vis";
 
@@ -15,6 +15,8 @@ interface Interest {
 interface lineChartProps {
   data: Interest[];
 }
+
+const FlexibleXYPlot = makeVisFlexible(XYPlot); 
 export default function LineCharts(props: lineChartProps) {
   // const data = [
   //   { x: 0, y: 8 },
@@ -29,10 +31,11 @@ export default function LineCharts(props: lineChartProps) {
   //   { x: 9, y: 0 },
   // ];
   return (
-    <XYPlot width={280} height={200} xType="time">
+    <FlexibleXYPlot  xType="time"  margin={{left: 50, right:50}}>
       <XAxis
         title="week"
         style={{
+          // width:100,
           line: { stroke: "#ADDDE1" },
           ticks: { stroke: "#ADDDE1" },
           text: {
@@ -63,6 +66,6 @@ export default function LineCharts(props: lineChartProps) {
         markStyle={{ stroke: "blue", fill: "blue" }}
         data={props.data}
       />
-    </XYPlot>
+    </FlexibleXYPlot>
   );
 }
