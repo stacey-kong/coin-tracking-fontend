@@ -168,7 +168,6 @@ export default function Dashboard() {
       ...prevState,
       open: false,
     }));
-    window.location.reload();
   };
 
   useEffect(() => {
@@ -227,28 +226,26 @@ export default function Dashboard() {
           />
         )}
       </div>
-
       <AddCoinForm
         show={addCoinFormState}
         onSave={addCoin}
         onClose={closeFrom}
-      ></AddCoinForm>
+      />
+
       {filterFormState && (
         <FilterForm
           show={filterFormState}
           onSave={addScription}
           onClose={closeFrom}
-          data={coinList!}
+          data={coinList}
         />
       )}
-
       <div className="self-end h-1/6">
         <ToolsBar>
           <Button text="Filter" onclick={() => showHideForm("filter")} />
           <Button text="Add" onclick={() => showHideForm("add")} />
         </ToolsBar>
       </div>
-
       <Popup data={popupState} onClose={closePopup} />
     </div>
   );
